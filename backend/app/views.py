@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import User
 from .serializers import UserSerializer
+from rest_framework import status
+from django.db import transaction
 
 # User APIs
 
@@ -59,24 +61,41 @@ def addTrip(request):
 
     try:
         with transaction.atomic():
+            # Trip creation
             trip_serializer = TripSerializer(data=trip_data)
             if trip_serializer.is_valid():
                 trip = trip_serializer.save()
-                planner_data = {'trip': trip.id}
-                planner_serializer = PlannerSerializer(data=planner_data)
-                if planner_serializer.is_valid():
-                    planner_serializer.save()
-                else:
-                    return Response(planner_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                budget_data.update({'trip': trip.id})
-                budget_serializer = BudgetSerializer(data=budget_data)
-                if budget_serializer.is_valid():
-                    budget_serializer.save()
-                else:
-                    return Response(budget_serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        return HttpResponse("Records added successfully")
+            else:
+                return Response(trip_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            # Planner creation
+            planner_data = {'trip': trip}
+            planner_serializer = PlannerSerializer(data=planner_data)
+            if planner_serializer.is_valid():
+                planner = planner_serializer.save()
+            else:
+                return Response(planner_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            # Budget creation
+            budget_data.update({'trip': trip}) 
+            budget_serializer = BudgetSerializer(data=budget_data)
+            if budget_serializer.is_valid():
+                budget_serializer.save()
+            else:
+                return Response(budget_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            # Item Checklist creation
+            item_checklist_data = {'planner': planner}  
+            item_checklist_serializer = ItemChecklistSerializer(data=item_checklist_data)
+            if item_checklist_serializer.is_valid():
+                item_checklist_serializer.save()
+            else:
+                return Response(item_checklist_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Records added successfully"}, status=status.HTTP_201_CREATED)
+    
     except Exception as e:
-        return HttpResponse("Error updating records: " + str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #Forecast API
 
@@ -97,3 +116,42 @@ def addForecast(request):
     return Response(serializer.data)
 
 
+#Expense API
+
+@api_view(['PUT'])
+def addExpenseByBudgetId(request):
+    expense_serializer = ExpenseSerializer(data=request.data)
+
+    if expense_serializer.is_valid():
+        expense_serializer.save()
+    else:
+        return Response(expense_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({"message": "Records added successfully"}, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def getExpensesByBudgetId(request, budget_id):
+    expense_by_budget = Expense.objects.filter(budget = budget_id)
+    serializer = ExpenseSerializer(expense_by_budget, many=True)
+
+    return Response(serializer.data)
+
+#Item API
+
+@api_view(['PUT'])
+def addItemByChecklistId(request):
+    item_serializer = ItemSerializer(data=request.data)
+
+    if item_serializer.is_valid():
+        item_serializer.save()
+    else:
+        return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({"message": "Records added successfully"}, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def getItemsByChecklistId(request, item_checklist_id):
+    item_by_checklist = Item.objects.filter(item_checklist = item_checklist_id)
+    serializer = ItemSerializer(item_by_checklist, many=True)
+
+    return Response(serializer.data)
