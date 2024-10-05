@@ -1,0 +1,8 @@
+.App {
+  text-align: center;
+}
+
+.input-placeholder::placeholder {
+  color: #FDFFE2;
+  opacity: 1; 
+}
