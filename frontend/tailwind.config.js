@@ -15,6 +15,9 @@ module.exports = {
         'input-lower-opacity': '#747ea8',
         'custom-dark-blue': '#1A2130',
       },
+      boxShadow: {
+        'white-glow': '0 0 2px 1px #FDFFE2',
+      },
     },
     screens: {
       'sm': '640px',

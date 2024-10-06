@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from "react-feather";
 
-const Carousel = ({ children, autoSlide=false, autoSlideInterval=5000 }) => {
+const Carousel = ({ children, autoSlide=false, autoSlideInterval=5000, texts = [] }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrev = () => {
@@ -20,18 +20,21 @@ const Carousel = ({ children, autoSlide=false, autoSlideInterval=5000 }) => {
 
     return (
         <div className='overflow-hidden relative w-full h-full'>
-            <div className='flex transition-transform ease-out duration-500' style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+            <div className='flex transition-transform ease-out duration-500 opacity-20' style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                 {children}
             </div>
             <div className='absolute top-1/2 transform -translate-y-1/2 left-2'>
-                <button onClick={handlePrev} className='bg-custom-white p-2 rounded-full shadow-md'>
+                <button onClick={handlePrev} className='bg-custom-white p-1 rounded-full shadow-md'>
                     <ChevronLeft />
                 </button>
             </div>
             <div className='absolute top-1/2 transform -translate-y-1/2 right-2'>
-                <button onClick={handleNext} className='bg-custom-white p-2 rounded-full shadow-md'>
+                <button onClick={handleNext} className='bg-custom-white p-1 rounded-full shadow-md'>
                     <ChevronRight />
                 </button>
+            </div>
+            <div className='absolute bottom-1/2 left-0 right-0 text-center'>
+                <p className='text-white text-3xl whitespace-pre-line tracking-wider'>{texts[currentIndex]}</p>
             </div>
             <div className="absolute bottom-4 right-0 left-0">
                 <div className="flex items-center justify-center gap-2">
