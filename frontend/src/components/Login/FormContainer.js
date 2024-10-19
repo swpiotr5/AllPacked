@@ -24,7 +24,7 @@ const FormContainer = () => {
                         style={{ fontFamily: 'Arial, FontAwesome' }}
                     />
                 </div>
-                <div className="relative">
+                <div className="relative mb-3">
                     <p className="text-custom-white mb-1 mt-3">Password</p>
                     <input
                         type="password"
@@ -53,7 +53,7 @@ const FormContainer = () => {
                 </button>
 
                 <div className="flex justify-start text-left mt-2 w-full">
-                    <a href="#" className="text-custom-white hover:underline block text-xs mt-3">Don't have an account? Sign up</a>        
+                    <a href="/register" className="text-custom-white hover:underline block text-s mt-3">Don't have an account? Sign up</a>        
                 </div>
             </form>
         </div>

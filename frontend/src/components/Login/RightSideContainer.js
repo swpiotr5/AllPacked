@@ -21,10 +21,10 @@ const RightSideContainer = ({ children }) => {
         "Be Prepared,\nBe AllPacked."
     ]
     return (
-        <div className='max-w-lg h-full'>
+        <div className='w-full h-full object-cover bg-black'>
             <Carousel autoSlide={true} texts={texts}>
                 {videos.map((src, index) => (
-                    <video key={index} src={src} className='w-full h-full object-cover' autoPlay muted loop></video>
+                    <video key={index} src={src} className='h-full w-full object-cover' autoPlay muted loop></video>
                 ))}
             </Carousel>
         </div>

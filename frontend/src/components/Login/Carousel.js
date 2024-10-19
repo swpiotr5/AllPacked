@@ -20,7 +20,7 @@ const Carousel = ({ children, autoSlide=false, autoSlideInterval=5000, texts = [
 
     return (
         <div className='overflow-hidden relative w-full h-full'>
-            <div className='flex transition-transform ease-out duration-500 opacity-20' style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+            <div className='flex transition-transform object-fit ease-out duration-500 opacity-20 w-full' style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                 {children}
             </div>
             <div className='absolute top-1/2 transform -translate-y-1/2 left-2'>
@@ -34,7 +34,7 @@ const Carousel = ({ children, autoSlide=false, autoSlideInterval=5000, texts = [
                 </button>
             </div>
             <div className='absolute bottom-1/2 left-0 right-0 text-center'>
-                <p className='text-white text-3xl whitespace-pre-line tracking-wider'>{texts[currentIndex]}</p>
+                <p className='text-custom-white text-3xl whitespace-pre-line tracking-wider'>{texts[currentIndex]}</p>
             </div>
             <div className="absolute bottom-4 right-0 left-0">
                 <div className="flex items-center justify-center gap-2">
