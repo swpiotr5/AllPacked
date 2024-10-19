@@ -9,7 +9,8 @@ const Navbar = ({ isHome }) => {
         if (isHome) {
             const navItems = document.querySelectorAll('.nav-item-text');
             navItems.forEach(item => {
-                item.classList.add('hover:text-custom-blue');
+                item.classList.add('hover:text-custom-white');
+                item.classList.add('hover:text-3xl');
             });
             const mainNav = document.getElementById('main-nav');
             if (mainNav) {
