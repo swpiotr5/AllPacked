@@ -10,3 +10,26 @@
 html, body, #root {
   height: 100%;
 }
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 4px;
+  bottom: -10px;
+  left: 0;
+  background-color: #1A2130;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
