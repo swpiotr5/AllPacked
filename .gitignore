@@ -6,6 +6,7 @@ informacje.txt
 /frontend/node_modules
 /frontend/.pnp
 /frontend/.pnp.js
+/frontend/src/assets
 
 # testing
 /frontend/coverage

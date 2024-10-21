@@ -10,7 +10,7 @@ const Navbar = ({ isHome }) => {
             const navItems = document.querySelectorAll('.nav-item-text');
             navItems.forEach(item => {
                 item.classList.add('hover:text-custom-white');
-                item.classList.add('hover:text-3xl');
+                item.classList.add('hover:text-2xl');
             });
             const mainNav = document.getElementById('main-nav');
             if (mainNav) {
@@ -20,35 +20,35 @@ const Navbar = ({ isHome }) => {
     }, [isHome]);
 
     return (
-        <div id="main-nav" className='fixed flex bg-custom-blue h-24 w-full z-10 justify-between items-center'>
+        <div id="main-nav" className='fixed flex bg-custom-blue h-20 w-full z-10 justify-between items-center'>
             <div className='flex h-full pl-10 items-center'>        
                 <img src={logoRowImg} alt="Description" className="object-cover w-32 h-16" />
             </div>
             <div className='flex-grow m-48 font-semibold'>
-                <ul className='flex h-full items-center justify-evenly space-x-4 text-2xl text-custom-white'>
+                <ul className='flex h-full items-center justify-evenly space-x-4 text-xl text-custom-white'>
                     <li>
                         <a href="/home" className='group relative'>
-                            <span className='nav-item-text hover-underline-animation text-2xl hover:text-custom-dark-blue duration-300'>Home</span>
+                            <span className='nav-item-text hover-underline-animation hover:text-custom-dark-blue duration-300'>Home</span>
                         </a>
                     </li>
                     <li>
                         <a href="/forecast" className='group relative'>
-                            <span className='nav-item-text hover-underline-animation text-2xl hover:text-custom-dark-blue duration-300'>Forecast</span>
+                            <span className='nav-item-text hover-underline-animation hover:text-custom-dark-blue duration-300'>Forecast</span>
                         </a>
                     </li>
                     <li>
                         <a href="/budget" className='group relative'>
-                            <span className='nav-item-text hover-underline-animation text-2xl hover:text-custom-dark-blue duration-300'>Budget</span>
+                            <span className='nav-item-text hover-underline-animation hover:text-custom-dark-blue duration-300'>Budget</span>
                         </a>
                     </li>
                     <li>
                         <a href="/planner" className='group relative'>
-                            <span className='nav-item-text hover-underline-animation text-2xl hover:text-custom-dark-blue duration-300'>Planner</span>
+                            <span className='nav-item-text hover-underline-animation hover:text-custom-dark-blue duration-300'>Planner</span>
                         </a>
                     </li>
                     <li>
                         <a href="/history" className='group relative'>
-                            <span className='nav-item-text hover-underline-animation text-2xl hover:text-custom-dark-blue duration-300'>History</span>
+                            <span className='nav-item-text hover-underline-animation hover:text-custom-dark-blue duration-300'>History</span>
                         </a>
                     </li>
                 </ul>
