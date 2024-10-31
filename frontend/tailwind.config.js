@@ -11,7 +11,11 @@ module.exports = {
       },
       colors: {
         'custom-blue': '#5A72A0',
+        'custom-medium-blue': '#20293b',
+        'custom-light-blue': '#2b3851',
+        'custom-lighter-blue': '#354664',
         'custom-white': '#FDFFE2',
+        'custom-gray': '#656A6B',
         'input-lower-opacity': '#747ea8',
         'custom-dark-blue': '#1A2130',
       },
