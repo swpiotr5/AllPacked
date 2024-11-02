@@ -42,3 +42,22 @@ html, body, #root {
 .fade-in.visible {
   opacity: 1;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  margin-left: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #5A72A0;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FDFFE2;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #1A2130;
+}

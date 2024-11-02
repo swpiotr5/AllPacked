@@ -23,11 +23,11 @@ const TripBudgetInformation = () => {
             <div className="">
                 <p className="text-3xl">{city} - {date} trip</p>
             </div>
-            <div className="w-full flex justify-around mt-5">
-                <div className="flex justify-center items-center rounded-xl w-2/6 text-xl bg-custom-blue h-10">
+            <div className="w-full grid grid-cols-2 justify-items-center mt-5">
+                <div className="flex justify-center items-center rounded-xl w-2/3 text-xl bg-custom-blue h-10">
                     <p>planned budget: {plannedBudget}</p>
                 </div>
-                <div className="flex justify-center items-center rounded-xl w-2/6 text-xl bg-custom-blue h-10">
+                <div className="flex justify-center items-center rounded-xl w-2/3 text-xl bg-custom-blue h-10">
                     <p>spent budget: {spentBudget}</p>
                 </div>
             </div>

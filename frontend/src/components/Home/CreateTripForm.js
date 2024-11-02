@@ -82,7 +82,7 @@ const CreateTripForm = () => {
                     <button onClick={nextStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Next</button>
                 )}
                 {currentStep === 2 && (
-                    <button className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
+                    <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
                 )}
             </div>
         </div>
