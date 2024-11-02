@@ -23,7 +23,7 @@ const Details = () => {
     };
 
     return (
-        <div id="wrapper-details" className="flex w-full p-3 items-start gap-4 bg-custom-light-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
+        <div id="wrapper-details" className="flex w-full p-3 items-start gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
             <button id="arrow-details" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
             <p className="">Details</p>
         </div>

@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
-import Body from '../layouts/inside/Body'
-import Navbar from '../layouts/inside/Navbar'
+import React, { useState, useEffect } from 'react';
+import Body from '../layouts/inside/Body';
+import Navbar from '../layouts/inside/Navbar';
 import TripSelector from '../layouts/inside/TripSelector';
 import TripBudgetInformation from '../components/Budget/TripBudgetInformation';
 import ManageExpenses from '../components/Budget/ManageExpenses';
 
-
 const Budget = () => {
     const [trip, setTrip] = useState('');
-    const handleTripChange = (e) => setTrip(e.target.value);
+
+    useEffect(() => {
+        const savedTrip = localStorage.getItem('trip');
+        if (savedTrip) {
+            setTrip(savedTrip);
+        }
+    }, []);
+
+    const handleTripChange = (e) => {
+        const selectedTrip = e.target.value;
+        setTrip(selectedTrip);
+        localStorage.setItem('trip', selectedTrip);
+    };
 
     return (
         <div>
-            <Navbar></Navbar>
+            <Navbar />
             <Body>
-                <TripSelector onTripChange={handleTripChange}></TripSelector>
+                <TripSelector trip={trip} onTripChange={handleTripChange} />
                 {trip && (
-                    <TripBudgetInformation></TripBudgetInformation>
-                    )}
+                    <TripBudgetInformation />
+                )}
                 {trip && (
-                    <ManageExpenses>
-                    </ManageExpenses>
-                    )}    
+                    <ManageExpenses />
+                )}
             </Body>
         </div>
-
-    )
-}
+    );
+};
 
 export default Budget;

@@ -23,7 +23,7 @@ const AddNewExpense = () => {
     };
 
     return (
-        <div id="wrapper-existing" className="flex w-full p-3 items-start gap-4 bg-custom-light-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
+        <div id="wrapper-existing" className="flex w-full p-3 items-start gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
             <button id="arrow-existing" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
             <p className="">Modify existing expense</p>
         </div>
