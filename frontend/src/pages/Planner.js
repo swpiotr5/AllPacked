@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Body from '../layouts/inside/Body'
 import Navbar from '../layouts/inside/Navbar'
 import TripSelector from '../layouts/inside/TripSelector';
+import Summary from '../components/Planner/Summary';
+import PlanningSection from '../components/Planner/PlanningSection';
 
 const Planner = () => {
     const [trip, setTrip] = useState('');
@@ -24,6 +26,12 @@ const Planner = () => {
             <Navbar></Navbar>
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
+                {trip && (
+                    <Summary></Summary>
+                )}
+                {trip && (
+                    <PlanningSection></PlanningSection>
+                )}
             </Body>
         </div>
 
