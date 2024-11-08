@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 import AddItemForm from './AddItemForm';
 import ToPackList from './ToPackList';
@@ -12,22 +12,34 @@ const ItemsChecklist = () => {
         { title: "ID", id: 4, is_packed: false },
     ]);
 
+    const messages = [
+        "Looks like you’re traveling *very* light... ready to start packing?",
+        "An empty list? Bold strategy. Shall we add a toothbrush at least?",
+        "So… planning on winging it? Might want to add a few essentials!",
+        "Minimalism at its finest! Or maybe it’s time to start packing?",
+        "Nothing packed yet? Ah, a master of last-minute packing, I see.",
+        "Traveling with nothing? Revolutionary. But just in case… want to start packing?",
+        "Starting with a blank slate, huh? Bold. Now, add something before you regret it.",
+        "Empty list, empty suitcase, empty… plan? Maybe add a thing or two before it’s too late.",
+        "No items? All set to live on vibes alone? Good luck with that.",
+        "This is your ‘no-plan’ plan? Let’s avoid a disaster and pack *something*.",
+        "Wow, this packing list screams ‘unprepared.’ Time to change that?",
+        "Taking ‘winging it’ to a whole new level, are we? Start packing, maybe?",
+        "Going all in on chaos, I see. Throw a few essentials in there, just in case.",
+        "Traveling dangerously close to unprepared? Might want to add a few things.",
+        "Trying to make packing a thrill-seeker’s sport? Go on, add some basics.",
+        "Confident you don’t need anything? Let’s at least get the essentials covered."
+    ];
+    
+    const [randomMessage, setRandomMessage] = useState("");
+
+    useEffect(() => {
+        setRandomMessage(messages[Math.floor(Math.random() * messages.length)]);
+    }, []);
+
     const onExtendElement = (e) => {
         e.preventDefault();
-        const detailsSection = document.getElementById('wrapper-checklist');
-        const arrowDetailsButton = document.getElementById('arrow-checklist');
-        if (detailsSection) {
-            if (isExpanded) {
-                detailsSection.classList.remove("h-auto");
-                detailsSection.classList.add("h-12");
-                arrowDetailsButton.classList.remove("rotate-180");
-            } else {
-                detailsSection.classList.remove("h-12");
-                detailsSection.classList.add("h-auto");
-                arrowDetailsButton.classList.add("rotate-180");
-            }
-            setIsExpanded(!isExpanded);
-        }
+        setIsExpanded(prevState => !prevState);
     };
 
     const ChangeItemStatus = (id) => {
@@ -37,19 +49,36 @@ const ItemsChecklist = () => {
         setItemsStatus(updatedItems);
     };
 
+    const removeItem = (id) => {
+        const updatedItems = itemsStatus.filter(item => item.id !== id);
+        setItemsStatus(updatedItems);
+    };
+    
+
+    const addItem = (newItem) => {
+        setItemsStatus(prevItems => [
+            ...prevItems,
+            { ...newItem, id: prevItems.length + 1, is_packed: false }
+        ]);
+    };
+
     const alreadyPacked = itemsStatus.filter(item => item.is_packed);
     const leftToPack = itemsStatus.filter(item => !item.is_packed);
 
     return (
-        <div id="wrapper-checklist" className="flex w-full p-3 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
+        <div id="wrapper-checklist" className={`flex w-full p-3 pb-5 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden ${isExpanded ? 'h-auto' : 'h-12'} rounded-xl transition-all duration-300`}>
             <div className='flex'>
-                <button id="arrow-checklist" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
+                <button id="arrow-checklist" onClick={onExtendElement} className={`text-3xl transition-all duration-300 ${isExpanded ? 'rotate-180' : ''}`}><IoMdArrowDropdown /></button>
                 <p className="pl-5">View items checklist</p>
             </div>
-            <AddItemForm />
-            <ToPackList items={leftToPack} ChangeItemStatus={ChangeItemStatus} />
-            <span>Items Packed: {alreadyPacked.length}</span>
-            <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} />
+            <AddItemForm addItem={addItem}/>
+            <ToPackList items={leftToPack} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>
+            <span className="text-xs ml-14">Items Packed: {alreadyPacked.length}</span>
+            {alreadyPacked.length > 0 ? (
+                <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>
+            ) : (
+                <span id="random-message" className="text-xs ml-14">{randomMessage}</span>
+            )}
         </div>
     );
 };
