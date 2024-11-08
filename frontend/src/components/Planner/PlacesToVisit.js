@@ -25,7 +25,7 @@ const PlacesToVisit = () => {
     return (
         <div id="wrapper-places" className="flex w-full p-3 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
             <div className='flex'>
-                <button id="arrow-places" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
+                <button id="arrow-places" onClick={onExtendElement} className="text-3xl "><IoMdArrowDropdown /></button>
                 <p className="pl-5">Places to visit suggestions</p>
             </div>
         </div>

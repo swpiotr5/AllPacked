@@ -19,7 +19,7 @@ const ForecastWrapper = () => {
     const city = "Kraków";
 
     return (
-        <div className='relative grid grid-cols-3 mt-12 pt-10 gap-4 p-5 bg-custom-medium-blue items-center h-2/3 w-2/3 rounded-xl'>
+        <div className='relative grid grid-cols-3 mt-12 p-4 gap-4 bg-custom-medium-blue items-center h-auto w-2/3 rounded-xl'>
             <div className="flex flex-col text-custom-white w-full h-full col-span-2">
                 <ForecastDetails temperature={temperature} rainPossibility={rainPossibility} city={city}></ForecastDetails>
                 <TodayForecast></TodayForecast>
