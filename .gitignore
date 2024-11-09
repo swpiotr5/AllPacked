@@ -1,4 +1,8 @@
 /backend/.env
+/backend/app/__pycache__
+/backend/backend/__pycache__
+/backend/app/migrations/__pycache__
+/backend/venv
 informacje.txt
 /zrodla_zdjec
 
