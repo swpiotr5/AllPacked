@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Summary = () => {
-    const cities = "Roma";
+    const cities = "Rome";
     const leftToPack = 5;
     const docuNeeded = "ID";
     const vaccinationRequired = "No";
