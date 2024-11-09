@@ -1,5 +1,49 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
 from .models import *
+
+from django.contrib.auth.models import User
+from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
+from rest_framework.validators import UniqueValidator
+
+class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True, required=True)
+    username = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password', 'confirm_password')
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"email": "User with this email already exists."})
+        
+        if attrs['password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"password": "Provided password does not match with confirm password."})
+
+        attrs.pop('confirm_password', None)
+
+        if not attrs.get('username'):
+            attrs['username'] = attrs['email'] 
+
+        return attrs
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        hashed_password = make_password(password)
+        user = User.objects.create(password=hashed_password, **validated_data)
+        return user
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
