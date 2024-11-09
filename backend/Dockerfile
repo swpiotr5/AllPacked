@@ -16,11 +16,11 @@ RUN pip install -r requirements.txt
 # Skopiuj resztę kodu aplikacji do katalogu roboczego
 COPY . .
 
-# Skopiuj skrypt wait-for-it.sh
-COPY wait-for-it.sh /wait-for-it.sh
-
 # Ustawienie zmiennej środowiskowej
 ENV PYTHONUNBUFFERED=1
 
+ENTRYPOINT ["/app/entrypoint.sh"]
+RUN chmod +x /app/entrypoint.sh
+
 # Uruchom aplikację z opóźnieniem startu
-CMD ["./wait-for-it.sh", "${PG_HOST}:${PG_PORT}", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

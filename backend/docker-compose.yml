@@ -6,7 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ./wait-for-it.sh ${PG_HOST}:${PG_PORT} -- python manage.py runserver 0.0.0.0:8000
+    # command: ./wait-for-it.sh ${PG_HOST}:${PG_PORT} -- python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
