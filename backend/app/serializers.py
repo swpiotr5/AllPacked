@@ -18,14 +18,14 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     confirm_password = serializers.CharField(write_only=True, required=True)
-    username = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'confirm_password')
+        fields = ('id', 'email', 'password', 'confirm_password')
 
     def validate(self, attrs):
         email = attrs.get('email')
+        
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError({"email": "User with this email already exists."})
         
@@ -35,15 +35,19 @@ class RegisterSerializer(serializers.ModelSerializer):
         attrs.pop('confirm_password', None)
 
         if not attrs.get('username'):
-            attrs['username'] = attrs['email'] 
+            attrs['username'] = email.split('@')[0]
 
         return attrs
 
     def create(self, validated_data):
+        # Haszowanie hasła przed zapisaniem
         password = validated_data.pop('password', None)
         hashed_password = make_password(password)
+        
+        # Tworzenie użytkownika z odpowiednimi danymi
         user = User.objects.create(password=hashed_password, **validated_data)
         return user
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
