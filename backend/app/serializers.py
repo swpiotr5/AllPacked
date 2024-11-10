@@ -35,7 +35,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         attrs.pop('confirm_password', None)
 
         if not attrs.get('username'):
-            attrs['username'] = email.split('@')[0]
+            attrs['username'] = email
 
         return attrs
 

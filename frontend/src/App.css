@@ -61,3 +61,17 @@ html, body, #root {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #1A2130;
 }
+
+input:focus {
+  outline: none;  /* Removes the default outline */
+  border: none;   /* Removes the border */
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.success-message {
+  animation: fadeIn 0.5s ease-out;
+}
