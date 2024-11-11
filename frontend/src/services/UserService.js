@@ -35,6 +35,7 @@ export const logout = async (navigate, setIsAuth) => {
 
     try {
         await axios.post('http://localhost:8000/token/blacklist/', { refresh: refreshToken });
+
       } catch (error) {
         console.error("Error logging out:", error);
       } finally {
