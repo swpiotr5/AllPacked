@@ -6,7 +6,7 @@ import video2 from "../../assets/city.mp4";
 import video3 from "../../assets/waterfall.mp4";
 import video4 from "../../assets/mushroom.mp4";
 
-const RightSideContainer = ({ children }) => {
+const RightSideContainer = () => {
     const videos = [
         video,
         video2,

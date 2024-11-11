@@ -1,10 +1,7 @@
 import React, {useState} from 'react';
 import AuthLayout from '../layouts/authentication/AuthLayout';
-import LeftSideWrapper from '../layouts/authentication/LeftSideWrapper';
-import RightSideWrapper from '../layouts/authentication/RightSideWrapper';
-import LeftSideContainer from '../components/Register/LeftSideContainer';
-import RightSideContainer from '../components/Register/RightSideContainer';
-import FormContainer from '../components/Register/FormContainer';
+import LeftSideRegistrationWrapper from '../components/Register/LeftSideRegistrationWrapper';
+import RightSideRegistrationWrapper from '../components/Register/RightSideRegistrationWrapper';
 import { register } from '../services/UserService';
 
 
@@ -64,10 +61,15 @@ const Register = ({ }) => {
 
     return (
         <AuthLayout>
-            <LeftSideWrapper>
-            </LeftSideWrapper>   
-            <RightSideWrapper registerData={registerData} handleChange={handleChange} handleSubmit={handleSubmit} error={error} success={success}>
-            </RightSideWrapper>
+            <LeftSideRegistrationWrapper>
+            </LeftSideRegistrationWrapper> 
+            <RightSideRegistrationWrapper 
+                registerData={registerData}
+                handleChange={handleChange} 
+                handleSubmit={handleSubmit} 
+                error={error} 
+                success={success}>
+            </RightSideRegistrationWrapper>
         </AuthLayout>
     )
 }

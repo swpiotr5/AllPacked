@@ -1,7 +1,7 @@
 import React from 'react';
 import LeftSideContainer from '../../components/Register/LeftSideContainer';
 
-const LeftSideWrapper = () => {
+const LeftSideRegistrationWrapper = () => {
     return (
         <div className="w-1/2 h-full">
             <LeftSideContainer></LeftSideContainer>
@@ -9,4 +9,4 @@ const LeftSideWrapper = () => {
       );
     }
 
-    export default LeftSideWrapper;
+export default LeftSideRegistrationWrapper;
