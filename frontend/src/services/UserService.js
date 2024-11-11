@@ -12,6 +12,7 @@ export const register = async(data) => {
 export const login = async(data, navigate) => {
     try {
         const response = await axios.post('http://localhost:8000/token/', data);
+
         const accessToken = response.data.access;
         if (accessToken) {
             localStorage.clear();

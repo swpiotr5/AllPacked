@@ -5,6 +5,7 @@ import imgdecorRotated from '../../assets/decor2rotated.png'
 import FormContainer from './FormContainer';
 
 const LeftSideContainer = ({loginData, handleChange, handleSubmit, error}) => {
+
   return (
     <div className="relative flex flex-col h-full justify-center items-center">
         <img src={imgdecor} alt="Description" className="absolute top-0 left-0 w-3/4 opacity-5 object-cover" />
