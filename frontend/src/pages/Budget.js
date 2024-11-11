@@ -5,7 +5,7 @@ import TripSelector from '../layouts/inside/TripSelector';
 import TripBudgetInformation from '../components/Budget/TripBudgetInformation';
 import ManageExpenses from '../components/Budget/ManageExpenses';
 
-const Budget = () => {
+const Budget = ({setIsAuth}) => {
     const [trip, setTrip] = useState('');
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Budget = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar setIsAuth={setIsAuth}/>
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange} />
                 {trip && (

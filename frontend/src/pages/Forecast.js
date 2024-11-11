@@ -4,7 +4,7 @@ import Navbar from '../layouts/inside/Navbar'
 import TripSelector from '../layouts/inside/TripSelector';
 import ForecastWrapper from '../components/Forecast/ForecastWrapper';
 
-const Forecast = () => {
+const Forecast = ({setIsAuth}) => {
     const [trip, setTrip] = useState('');
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const Forecast = () => {
 
     return (
         <div className="h-screen">
-        <Navbar></Navbar>
+        <Navbar setIsAuth={setIsAuth}></Navbar>
         <Body>
             <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
             {trip && (<ForecastWrapper></ForecastWrapper>)}

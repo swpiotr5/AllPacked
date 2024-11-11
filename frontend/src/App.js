@@ -38,14 +38,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={isAuth ? <Home/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/" element={isAuth ? <Home setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
         <Route path="/login" element={!isAuth ? <Login setIsAuth={setIsAuth}/> : <Home/>} />
-        <Route path="/register" element={!isAuth ? <Register/> : <Home/>} />
-        <Route path="/home" element={isAuth ? <Home/> : <Login setIsAuth={setIsAuth}/>} />
-        <Route path="/forecast" element={isAuth ? <Forecast/> : <Login setIsAuth={setIsAuth}/>} />
-        <Route path="/budget" element={isAuth ? <Budget/> : <Login setIsAuth={setIsAuth}/>} />
-        <Route path="/planner" element={isAuth ? <Planner/> : <Login setIsAuth={setIsAuth}/>} />
-        <Route path="/history" element={isAuth ? <History/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/register" element={!isAuth ? <Register/> : <Home setIsAuth={setIsAuth}/>} />
+        <Route path="/home" element={isAuth ? <Home setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/forecast" element={isAuth ? <Forecast setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/budget" element={isAuth ? <Budget setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/planner" element={isAuth ? <Planner setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/history" element={isAuth ? <History setIsAuth={setIsAuth}/> : <Login setIsAuth={setIsAuth}/>} />
       </Routes>
     </Router>
   );

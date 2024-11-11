@@ -5,7 +5,7 @@ import TripSelector from '../layouts/inside/TripSelector';
 import Summary from '../components/Planner/Summary';
 import PlanningSection from '../components/Planner/PlanningSection';
 
-const Planner = () => {
+const Planner = ({setIsAuth}) => {
     const [trip, setTrip] = useState('');
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Planner = () => {
 
     return (
         <div>
-            <Navbar></Navbar>
+            <Navbar setIsAuth={setIsAuth}></Navbar>
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
                 {trip && (

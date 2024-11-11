@@ -5,7 +5,7 @@ import PictureSection from '../components/Home/PictureSection';
 import ManageTripSection from '../components/Home/ManageTripSection';
 import { FaArrowCircleUp } from 'react-icons/fa';
 
-const Home = () => {
+const Home = ({setIsAuth}) => {
     const onScrollToSection = (e) => {
         e.preventDefault();
         const manageSection = document.getElementById('manage-trip-section');
@@ -24,7 +24,7 @@ const Home = () => {
 
     return (
         <div>
-            <Navbar isHome={true}></Navbar>
+            <Navbar isHome={true} setIsAuth={setIsAuth}></Navbar>
             <Body>
                 <PictureSection id="picture-section" onScrollToSection={onScrollToSection} />
                 <ManageTripSection id="manage-trip-section" />
