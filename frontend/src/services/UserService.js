@@ -8,3 +8,20 @@ export const register = async(data) => {
         throw error.response.data;
     }
 }
+
+export const login = async(data, navigate) => {
+    try {
+        const response = await axios.post('http://localhost:8000/token/', data);
+        const accessToken = response.data.access;
+        if (accessToken) {
+            localStorage.clear();
+            localStorage.setItem('access_token', accessToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            navigate('/home');
+        }
+
+        return response.data;
+    } catch (error) {
+         throw error.response ? error.response.data : error.message;
+    }
+}

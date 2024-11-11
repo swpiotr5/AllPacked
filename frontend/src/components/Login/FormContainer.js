@@ -2,23 +2,19 @@ import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../../App.css'; 
 
-const FormContainer = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+const FormContainer = ({loginData, handleChange, handleSubmit, error}) => {
 
     return (
         <div className="relative flex flex-col justify-center items-center w-full">
-            <form className="flex flex-col p-1 w-3/5">
+            <form className="flex flex-col p-1 w-3/5" onSubmit={handleSubmit}>
                 <div className="relative">
                     <p className="text-custom-white mb-1 text-">Email</p>
                     <input
                         type="text"
                         id="email"
-                        value={email}
-                        onChange={handleEmailChange}
+                        name="username"
+                        value={loginData.username}
+                        onChange={handleChange}
                         className="p-2 pl-3 bg-input-lower-opacity input-placeholder shadow-2xl text-custom-white rounded-xl w-full text-sm"
                         placeholder="&#xf007;"
                         style={{ fontFamily: 'Arial, FontAwesome' }}
@@ -29,8 +25,9 @@ const FormContainer = () => {
                     <input
                         type="password"
                         id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
+                        name="password"
+                        value={loginData.password}
+                        onChange={handleChange}
                         className="p-2 pl-3 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
                         placeholder="&#xf023;"
                         style={{ fontFamily: 'Arial, FontAwesome' }}
@@ -39,6 +36,12 @@ const FormContainer = () => {
                         <a href="/resetPassword" className="text-custom-white hover:underline block text-xs mt-3">Forgot password?</a>
                     </div>                
                 </div>
+                {error && (
+                        <div className="error mt-3 text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-lg shadow-md flex items-center space-x-3">
+                            <i className="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                            <p className="text-sm font-medium">{error.detail}</p>
+                        </div>
+                    )}
                 <button type="submit" className=" border-slate-600 p-1 mt-6 font-bold shadow-2xl bg-custom-white text-custom-dark-blue rounded-xl text-xl hover:bg-custom-dark-blue hover:text-custom-white">Sign In</button>
                 
                 <div className="flex items-center my-4 w-full">
@@ -46,7 +49,6 @@ const FormContainer = () => {
                     <span className="mx-4 text-custom-white">OR</span>
                     <div className="flex-grow border-t border-custom-white"></div>
                 </div>
-
                 <button className="flex items-center justify-center border-slate-600 p-1 opacity-80 p-2 font-semibold shadow-2xl bg-custom-dark-blue text-custom-white rounded-xl text-l hover:bg-custom-white hover:text-custom-dark-blue">
                     <i className="fab fa-google mr-2"></i>
                     Sign in with Google
