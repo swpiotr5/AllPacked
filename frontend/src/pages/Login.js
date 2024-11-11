@@ -1,14 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthLayout from '../layouts/authentication/AuthLayout';
 import LeftSideLoginWrapper from '../components/Login/LeftSideLoginWrapper';
 import RightSideLoginWrapper from '../components/Login/RightSideLoginWrapper';
+import { login } from '../services/UserService';
+import { useNavigate } from 'react-router-dom';
 
 
-const Login = () => {
+const Login = ({setIsAuth}) => {
+    const [loginData, setLoginData] = useState({
+        email: '',
+        password: ''
+      });
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setLoginData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+          const response = await login(loginData, navigate);
+          console.log('Login successful:', response);
+          setIsAuth(true);
+          setError(null);
+          setLoginData({
+            username: '',
+            password: '',
+            });
+        } catch (err) {
+          console.error('Login failed:', err);
+          setError(err);
+        }
+      };
 
     return (
         <AuthLayout>
-            <LeftSideLoginWrapper>
+            <LeftSideLoginWrapper loginData={loginData} handleChange={handleChange} handleSubmit={handleSubmit}>
             </LeftSideLoginWrapper>   
             <RightSideLoginWrapper>
             </RightSideLoginWrapper>

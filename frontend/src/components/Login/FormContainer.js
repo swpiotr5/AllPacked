@@ -2,23 +2,19 @@ import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../../App.css'; 
 
-const FormContainer = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+const FormContainer = ({loginData, handleChange, handleSubmit}) => {
 
     return (
         <div className="relative flex flex-col justify-center items-center w-full">
-            <form className="flex flex-col p-1 w-3/5">
+            <form className="flex flex-col p-1 w-3/5" onSubmit={handleSubmit}>
                 <div className="relative">
                     <p className="text-custom-white mb-1 text-">Email</p>
                     <input
                         type="text"
                         id="email"
-                        value={email}
-                        onChange={handleEmailChange}
+                        name="username"
+                        value={loginData.username}
+                        onChange={handleChange}
                         className="p-2 pl-3 bg-input-lower-opacity input-placeholder shadow-2xl text-custom-white rounded-xl w-full text-sm"
                         placeholder="&#xf007;"
                         style={{ fontFamily: 'Arial, FontAwesome' }}
@@ -29,8 +25,9 @@ const FormContainer = () => {
                     <input
                         type="password"
                         id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
+                        name="password"
+                        value={loginData.password}
+                        onChange={handleChange}
                         className="p-2 pl-3 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
                         placeholder="&#xf023;"
                         style={{ fontFamily: 'Arial, FontAwesome' }}

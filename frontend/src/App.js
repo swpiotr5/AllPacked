@@ -11,16 +11,41 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkIfAuth = async () => {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        setIsAuth(true);
+      }
+      setLoading(false);
+    };
+    checkIfAuth();
+
+    window.addEventListener('storage', checkIfAuth);
+
+    return () => {
+      window.removeEventListener('storage', checkIfAuth);
+    };
+  }, []);
+
+  if (loading) {
+    return <div className="bg-custom-dark-blue">Loading...</div>;
+  }
+
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
-        <Route path="/home" element={<Home/>} />
-        <Route path="/forecast" element={<Forecast/>} />
-        <Route path="/budget" element={<Budget/>} />
-        <Route path="/planner" element={<Planner/>} />
-        <Route path="/history" element={<History/>} />
+        <Route path="/" element={isAuth ? <Home/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/login" element={!isAuth ? <Login setIsAuth={setIsAuth}/> : <Home/>} />
+        <Route path="/register" element={!isAuth ? <Register/> : <Home/>} />
+        <Route path="/home" element={isAuth ? <Home/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/forecast" element={isAuth ? <Forecast/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/budget" element={isAuth ? <Budget/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/planner" element={isAuth ? <Planner/> : <Login setIsAuth={setIsAuth}/>} />
+        <Route path="/history" element={isAuth ? <History/> : <Login setIsAuth={setIsAuth}/>} />
       </Routes>
     </Router>
   );
