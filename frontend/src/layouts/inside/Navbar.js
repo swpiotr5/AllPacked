@@ -2,8 +2,12 @@ import React, { useEffect } from 'react';
 import logoRowImg from '../../assets/Logo-row.png';
 import userImg from '../../assets/user.png';
 import '../../App.css';
+import { MdLogout } from "react-icons/md";
+import { logout } from '../../services/UserService';
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = ({ isHome }) => {
+const Navbar = ({ isHome, setIsAuth }) => {
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isHome) {
@@ -18,6 +22,11 @@ const Navbar = ({ isHome }) => {
             }
         }
     }, [isHome]);
+
+    const onClickLogout = (e) => {
+        e.preventDefault();
+        logout(navigate, setIsAuth);
+    }
 
     return (
         <div id="main-nav" className='fixed flex bg-custom-blue h-20 w-full z-10 justify-between items-center'>
@@ -53,8 +62,11 @@ const Navbar = ({ isHome }) => {
                     </li>
                 </ul>
             </div>
-            <div className='flex h-full pr-10 items-center'>        
-                <img src={userImg} alt="Description" className="object-cover h-1/2 hover:scale-110" />
+            <div className='flex h-full pr-5 items-center'>        
+                <button className="h-full">
+                    <img src={userImg} alt="Description" className="object-cover h-1/2 hover:scale-110" />
+                </button>
+                <button className="text-custom-white pl-3 hover:scale-110" onClick={onClickLogout}><MdLogout /></button>
             </div>
         </div>
     );
