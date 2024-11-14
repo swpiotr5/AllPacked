@@ -4,14 +4,22 @@ import TripFormSecondStep from './TripFormSecondStep';
 import TripFormThirdStep from './TripFormThirdStep';
 
 const CreateTripForm = () => {
-    const [tripName, setTripName] = useState('');
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [date, setDate] = useState('');
-    const [tripDuration, setTripDuration] = useState(0);
-    const [plannedBudget, setPlannedBudget] = useState(0);
-    const [accommodation, setAccommodation] = useState('');
-    const [tripPreferences, setTripPreferences] = useState('option1');
+    const [tripData, setTripData] = useState({
+        tripName: '',
+        country: '',
+        city: '',
+        date: '',
+        tripDuration: 0,
+        accommodation: 'tent',
+        tripPreferences: 'city',
+    });
+
+    const [budgetData, setBudgetData] = useState({
+        plannedBudget: 0,
+        spentBudget: 0,
+        currency: 'PLN',
+    });
+
     const [currentStep, setCurrentStep] = useState(0);
     const steps = [1, 2, 3]; 
 
@@ -23,15 +31,75 @@ const CreateTripForm = () => {
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     };
 
+    const handleTripChange = (e) => {
+        const { name, value } = e.target;
+        setTripData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
-    const handleTripNameChange = (e) => setTripName(e.target.value);
-    const handleCountryChange = (e) => setCountry(e.target.value);
-    const handleCityChange = (e) => setCity(e.target.value);
-    const handleDateChange = (e) => setDate(e.target.value);
-    const handleTripDurationChange = (e) => setTripDuration(e.target.value);
-    const handleTripPreferencesChange = (e) => setTripPreferences(e.target.value);
-    const handlePlannedBudgetChange = (e) => setPlannedBudget(e.target.value)
-    const handleAccommodationChange = (e) => setAccommodation(e.target.value)
+    const handleBudgetChange = (e) => {
+        const { name, value } = e.target;
+        setBudgetData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const tripDataWithConvertedValues = {
+            ...tripData,
+            plannedBudget: parseFloat(tripData.plannedBudget), 
+            tripDuration: parseInt(tripData.tripDuration),
+        };
+
+        const userToken = localStorage.getItem('access_token');
+
+        if (!userToken) {
+            console.error("User is not authenticated, no token found.");
+            return;
+        }
+
+        const dataToSend = {
+            trip: {
+                accommodation: tripDataWithConvertedValues.accommodation,
+                country: tripDataWithConvertedValues.country,
+                city: tripDataWithConvertedValues.city,
+                date: tripDataWithConvertedValues.date,
+                tripName: tripDataWithConvertedValues.tripName,
+                tripDuration: tripDataWithConvertedValues.tripDuration,
+                tripPreferences: tripDataWithConvertedValues.tripPreferences,
+            },
+            budget: {
+                plannedBudget: parseFloat(budgetData.plannedBudget), 
+                spentBudget: budgetData.spentBudget || null,
+                currency: budgetData.currency,
+            }
+        };
+        
+        try {
+            console.log("Data being sent:", JSON.stringify(dataToSend, null, 2));
+            const response = await fetch('http://localhost:8000/trip/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${userToken}`
+                },
+                body: JSON.stringify(dataToSend), 
+            });
+            
+            if (response.ok) {
+                console.log("Trip data successfully submitted!");
+            } else {
+                console.error("Failed to submit trip data");
+            }
+        } catch (error) {
+            console.error("Error submitting trip data:", error);
+        }
+    };
 
     return (
         <div className="mt-10 rounded-xl w-full h-auto flex flex-col gap-10">
@@ -43,48 +111,43 @@ const CreateTripForm = () => {
                         ></div>
                     ))}
                 </div>
-            <form className="flex flex-col h-3/4 w-full">
-            {currentStep === 0 && (
-                <TripFormFirstStep
-                    tripName={tripName}
-                    country={country}
-                    city={city}
-                    onHandleTripNameChange={handleTripNameChange}
-                    onHandleCountryChange={handleCountryChange}
-                    onHandleCityChange={handleCityChange}
-                />
-            )}
-            {currentStep === 1 && (
-                <TripFormSecondStep
-                    date={date}
-                    tripDuration={tripDuration}
-                    plannedBudget={plannedBudget}
-                    onHandlePlannedBudgetChange={handlePlannedBudgetChange}
-                    onHandleDateChange={handleDateChange}
-                    onHandleTripDurationChange={handleTripDurationChange}
-                />
-            )}
-            {currentStep === 2 && (
-                <TripFormThirdStep
-                tripPreferences={tripPreferences}
-                accommodation={accommodation}
-                onHandleAccommodationChange={handleAccommodationChange}
-                onHandleTripPreferencesChange={handleTripPreferencesChange}
-                />
-            )}
-            </form>
-
-            <div className="flex justify-center gap-10">
-                {currentStep > 0 && (
-                    <button onClick={prevStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Previous</button>
+            <form className="flex flex-col h-3/4 w-full" onSubmit={handleSubmit}>
+                {currentStep === 0 && (
+                    <TripFormFirstStep
+                        tripName={tripData.tripName}
+                        country={tripData.country}
+                        city={tripData.city}
+                        onChange={handleTripChange}
+                    />
                 )}
-                {currentStep < 2 && (
-                    <button onClick={nextStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Next</button>
+                {currentStep === 1 && (
+                    <TripFormSecondStep
+                        date={tripData.date}
+                        tripDuration={tripData.tripDuration}
+                        plannedBudget={budgetData.plannedBudget}
+                        onTripChange={handleTripChange}
+                        onBudgetChange={handleBudgetChange}
+                    />
                 )}
                 {currentStep === 2 && (
-                    <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
+                    <TripFormThirdStep
+                    tripPreferences={tripData.tripPreferences}
+                    accommodation={tripData.accommodation}
+                    onChange={handleTripChange}
+                />
                 )}
-            </div>
+                <div className="flex justify-center gap-10 mt-5">
+                    {currentStep > 0 && (
+                        <button type="button" onClick={prevStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Previous</button>
+                    )}
+                    {currentStep < 2 && (
+                        <button type="button" onClick={nextStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Next</button>
+                    )}
+                    {currentStep === 2 && (
+                        <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
+                    )}
+                </div>
+            </form>
         </div>
     );
 };

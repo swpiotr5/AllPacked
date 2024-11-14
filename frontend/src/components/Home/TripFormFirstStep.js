@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaGlobe, FaSuitcase, FaCity } from 'react-icons/fa';
 
-const TripFormFirstStep = ({ tripName, country, city, onHandleTripNameChange, onHandleCountryChange, onHandleCityChange }) => {
+const TripFormFirstStep = ({ tripName, country, city, onChange}) => {
     return (
         <div>
                 <div className="w-full flex flex-col gap-10 items-center justify-center">
@@ -11,8 +11,9 @@ const TripFormFirstStep = ({ tripName, country, city, onHandleTripNameChange, on
                             <input
                                 type="text"
                                 id="tripName"
+                                name="tripName"
                                 value={tripName}
-                                onChange={onHandleTripNameChange}
+                                onChange={onChange}
                                 placeholder="trip name here..."
                                 className="pl-7 p-2 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
                             />
@@ -25,8 +26,9 @@ const TripFormFirstStep = ({ tripName, country, city, onHandleTripNameChange, on
                             <input
                                 type="text"
                                 id="country"
+                                name="country"
                                 value={country}
-                                onChange={onHandleCountryChange}
+                                onChange={onChange}
                                 placeholder="Enter country"
                                 className="pl-7 p-2 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
                             />
@@ -39,8 +41,9 @@ const TripFormFirstStep = ({ tripName, country, city, onHandleTripNameChange, on
                             <input
                                 type="text"
                                 id="city"
+                                name="city"
                                 value={city}
-                                onChange={onHandleCityChange}
+                                onChange={onChange}
                                 placeholder="trip city here..."
                                 className="pl-7 p-2 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
                             />
