@@ -4,14 +4,21 @@ from django.contrib.auth.models import User
 class Trip(models.Model):
     trip_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    accommodation = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     date = models.DateField()
-    duration = models.IntegerField()
+    tripName = models.CharField(max_length=50)
+    tripDuration = models.IntegerField()
+    tripPreferences = models.CharField(max_length=50)
     date_created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.country
+class Budget(models.Model):
+    budget_id = models.AutoField(primary_key=True)
+    trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
+    plannedBudget = models.FloatField()
+    spentBudget = models.FloatField()
+    currency = models.CharField(max_length=50)
 
 class Forecast(models.Model):
     forecast_id = models.AutoField(primary_key=True)
@@ -76,13 +83,6 @@ class TransportSuggestions(models.Model):
 
     def __str__(self):
         return self.suggestion
-
-class Budget(models.Model):
-    budget_id = models.AutoField(primary_key=True)
-    trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
-    planned_budget = models.FloatField()
-    spent_budget = models.FloatField()
-    currency = models.CharField(max_length=50)
 
 class Expense(models.Model):
     expense_id = models.AutoField(primary_key=True)

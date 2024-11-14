@@ -57,7 +57,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = '__all__'
+        fields = ['accommodation', 'country', 'city', 'date', 'tripName', 'tripDuration', 'tripPreferences', 'user']
 
 class ForecastSerializer(serializers.ModelSerializer):
     class Meta:
@@ -102,5 +102,5 @@ class ExpenseSerializer(serializers.ModelSerializer):
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
-        fields = '__all__'
+        fields = ['plannedBudget', 'spentBudget', 'currency', 'trip']
 
