@@ -17,7 +17,7 @@ class Budget(models.Model):
     budget_id = models.AutoField(primary_key=True)
     trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
     plannedBudget = models.FloatField()
-    spentBudget = models.FloatField()
+    spentBudget = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=50)
 
 class Forecast(models.Model):

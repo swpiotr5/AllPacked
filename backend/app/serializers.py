@@ -103,4 +103,7 @@ class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
         fields = ['plannedBudget', 'spentBudget', 'currency', 'trip']
+        extra_kwargs = {
+            'spentBudget': {'required': False},  
+        }
 
