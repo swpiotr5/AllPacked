@@ -13,17 +13,23 @@ const TripSelector = ({ trip, onTripChange }) => {
                 console.error('Error fetching trips:', error);
             }
         };
-
+ 
         fetchTrips();
     }, []);
+
+    const handleSelectChange = (e) => {
+        const selectedTripName = e.target.value;
+        const selectedTrip = trips.find(trip => trip.tripName === selectedTripName);
+        onTripChange(selectedTrip);
+    };
 
     return (
         <div className="bg-custom-grey w-60 mt-32 rounded-xl flex justify-center">
             <select
                 name="trips"
                 id="trip-select"
-                value={trip}
-                onChange={onTripChange}
+                value={trip.tripName}
+                onChange={handleSelectChange}
                 className="uppercase text-center bg-custom-gray tracking-wide text-custom-white font-semibold rounded-xl w-56 h-8"
             >
                 <option value="">Select trip</option>

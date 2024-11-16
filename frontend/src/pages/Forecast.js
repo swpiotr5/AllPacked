@@ -5,10 +5,17 @@ import TripSelector from '../layouts/inside/TripSelector';
 import ForecastWrapper from '../components/Forecast/ForecastWrapper';
 
 const Forecast = ({setIsAuth}) => {
-    const [trip, setTrip] = useState('');
+    const [trip, setTrip] = useState({
+        tripName: '',
+        country: '',
+        city: '',
+        date: '',
+        tripDuration: 0,
+        accommodation: 'tent',
+        tripPreferences: 'city',
+    });
 
-    const handleTripChange = (e) => {
-        const selectedTrip = e.target.value;
+    const handleTripChange = (selectedTrip) => {
         setTrip(selectedTrip);
     };
 
@@ -17,7 +24,7 @@ const Forecast = ({setIsAuth}) => {
         <Navbar setIsAuth={setIsAuth}></Navbar>
         <Body>
             <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
-            {trip && (<ForecastWrapper></ForecastWrapper>)}
+            {trip.tripName && (<ForecastWrapper trip={trip}></ForecastWrapper>)}
         </Body>
     </div>
     )

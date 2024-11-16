@@ -1,21 +1,20 @@
 import React from 'react';
-import sun from '../../assets/sun.png';
-
-const ForecastDetails = ({city, rainPossibility, temperature}) => {
+const ForecastDetails = ({city, currConds, temperature, weatherIcon}) => {
+    const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
 
     return (
         <div className="grid grid-cols-4 m-10">
             <div className='col-span-2 w-full'>
                 <p>Your location:</p>
                 <p className="mt-4 mb-4 text-4xl tracking-wide font-bold">{city}</p>
-                <p>Rain possibility: {rainPossibility}</p>
+                <p>currently: {currConds}</p>
             </div>
-            <div className='flex col-span-1 justify-center p-5 w-full'>
+            <div className='flex col-span-1 justify-center p-3 w-full'>
                 <p className="text-5xl font-bold">{temperature}</p>
             </div>
-            <div className="col-span-1 w-full pl-5 pr-5">
+            <div className="col-span-1 w-full">
                 <img
-                    src={sun}
+                    src={iconUrl}
                     className="w-full h-full object-cover"
                 />
             </div>

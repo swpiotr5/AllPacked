@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TripFormFirstStep from './TripFormFirstStep';
 import TripFormSecondStep from './TripFormSecondStep';
 import TripFormThirdStep from './TripFormThirdStep';
+import axios from '../../interceptor/axios';
 
 const CreateTripForm = () => {
     const [tripData, setTripData] = useState({
@@ -102,23 +103,21 @@ const CreateTripForm = () => {
         };
         
         try {
-            const response = await fetch('http://localhost:8000/trip/add', {
-                method: 'POST',
+            const response = await axios.post('/trip/add', dataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${userToken}`
-                },
-                body: JSON.stringify(dataToSend), 
+                }
             });
             
-            if (response.ok) {
+            if (response.status === 200 || response.status === 201) {
                 setSuccess("Trip data successfully submitted!");
                 setError();
             } else {
                 setError("Failed to submit trip data");
             }
         } catch (error) {
-            setError(error);
+            setError(error.message);
         }
     };
 
