@@ -1,33 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import axios from '../../interceptor/axios';
 
 const TripSelector = ({ trip, onTripChange }) => {
     const [trips, setTrips] = useState([]);
 
     useEffect(() => {
         const fetchTrips = async () => {
-            const userToken = localStorage.getItem('access_token');
-            if (!userToken) {
-                console.error("User is not authenticated, no token found.");
-                return;
-            }
-    
             try {
-                const response = await fetch('http://localhost:8000/trip/getall', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${userToken}`
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    setTrips(data);
-                } else {
-                    console.error('Data is not an array:', data);
-                }
+                const response = await axios.get('/trip/getall');
+                setTrips(response.data);
             } catch (error) {
                 console.error('Error fetching trips:', error);
             }

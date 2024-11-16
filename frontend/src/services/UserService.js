@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from '../interceptor/axios'
 import { RefreshCw } from 'react-feather';
 
 export const register = async(data) => {
     try {
-        const response = await axios.post('http://localhost:8000/register/', data);
+        const response = await axios.post('/register/', data);
         return response.data;
     } catch (error) {
         throw error.response.data;
@@ -12,7 +12,7 @@ export const register = async(data) => {
 
 export const login = async(data, navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/token/', data);
+        const response = await axios.post('/token/', data);
 
         const accessToken = response.data.access;
         const refreshToken = response.data.refresh;
@@ -34,7 +34,7 @@ export const logout = async (navigate, setIsAuth) => {
     const refreshToken = localStorage.getItem('refresh_token');
 
     try {
-        await axios.post('http://localhost:8000/token/blacklist/', { refresh: refreshToken });
+        await axios.post('/token/blacklist/', { refresh: refreshToken });
 
       } catch (error) {
         console.error("Error logging out:", error);
