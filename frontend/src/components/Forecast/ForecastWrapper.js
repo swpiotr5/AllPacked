@@ -99,17 +99,20 @@ const ForecastWrapper = ({trip}) => {
 
         return acc;
     }, {});
-
-    const nextFiveDaysForecast = Object.values(groupedForecast).slice(1, 6).map(day => {
+    const today = new Date().getUTCDate();
+    const nextFiveDaysForecast = Object.values(groupedForecast)
+    .filter(day => day.dayOfWeek !== today)
+    .slice(0, 5)
+    .map(day => {
         const averageTemp = day.temperatures.reduce((sum, temp) => sum + temp, 0) / day.temperatures.length;
         const iconFrequency = day.icons.reduce((acc, icon) => {
-            if (icon.endsWith('d')) { 
+            if (icon.endsWith('d')) {
                 acc[icon] = (acc[icon] || 0) + 1;
             }
             return acc;
         }, {});
         const mostFrequentIcon = Object.keys(iconFrequency).reduce((a, b) => iconFrequency[a] > iconFrequency[b] ? a : b);
-        
+
         return {
             dayOfWeek: day.dayOfWeek,
             averageTemp: `${Math.round(averageTemp)}°C`,
