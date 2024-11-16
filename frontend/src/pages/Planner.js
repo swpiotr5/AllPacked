@@ -8,17 +8,9 @@ import PlanningSection from '../components/Planner/PlanningSection';
 const Planner = ({setIsAuth}) => {
     const [trip, setTrip] = useState('');
 
-    useEffect(() => {
-        const savedTrip = localStorage.getItem('trip');
-        if (savedTrip) {
-            setTrip(savedTrip);
-        }
-    }, []);
-
     const handleTripChange = (e) => {
         const selectedTrip = e.target.value;
         setTrip(selectedTrip);
-        localStorage.setItem('trip', selectedTrip);
     };
 
     return (

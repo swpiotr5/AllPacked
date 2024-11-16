@@ -6,6 +6,7 @@ from app import views as app_views
 urlpatterns = [
     path('register/', app_views.RegisterView.as_view(), name="register"),
     path('trip/add', app_views.AddTripView.as_view(), name="addtrip"),
+    path("trip/getall", app_views.GetTripsView.as_view(), name="getalltrips"),
     path('admin/', admin.site.urls),
     path('api/', include('app.urls')),
     path('token/', 

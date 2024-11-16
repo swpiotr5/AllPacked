@@ -4,11 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from .models import User
 from .serializers import UserSerializer
+from .models import Trip
 from .serializers import RegisterSerializer
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
 from rest_framework import status
 from django.db import transaction
+from datetime import datetime, timedelta
 
 # User APIs
 
@@ -56,7 +58,6 @@ class AddTripView(APIView):
         budget_data = request.data.get('budget')
             
         user = request.user 
-        print(user.id)
         if user is None:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -73,3 +74,21 @@ class AddTripView(APIView):
         except Exception as e:
             print("Error:", str(e))  
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GetTripsView(APIView):
+    def get(self, request):
+        user = request.user
+        if user.is_authenticated:
+            trips = Trip.objects.filter(user=user)
+            valid_trips = []
+            current_date = datetime.now().date()
+
+            for trip in trips:
+                end_date = trip.date + timedelta(days=trip.tripDuration)
+                if end_date >= current_date:
+                    valid_trips.append(trip)
+
+            serializer = TripSerializer(valid_trips, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
