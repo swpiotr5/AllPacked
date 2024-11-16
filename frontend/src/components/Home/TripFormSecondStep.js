@@ -26,7 +26,8 @@ const TripFormSecondStep = ({ date, tripDuration, plannedBudget, onTripChange, o
                             onChange={onTripChange}
                             placeholder="trip duration here.."
                             className="p-2 pl-7 mt-5 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
-                        />
+                            min="0"
+                       />
                     </label>
                     <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
                         How much money do you plan to spend during trip?
@@ -38,6 +39,7 @@ const TripFormSecondStep = ({ date, tripDuration, plannedBudget, onTripChange, o
                             onChange={onBudgetChange}
                             placeholder="planned budget here.."
                             className="p-2 pl-7 mt-5 bg-input-lower-opacity rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white"
+                            min="0"
                         />
                     </label>
                 </div>

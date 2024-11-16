@@ -30,7 +30,8 @@ const CreateTripForm = () => {
     const prevStep = () => {
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     };
-
+    const [error, setError] = useState();
+    const [success, setSuccess] = useState();
     const handleTripChange = (e) => {
         const { name, value } = e.target;
         setTripData((prevData) => ({
@@ -50,6 +51,25 @@ const CreateTripForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const requiredTripFields = ['tripName', 'country', 'city', 'date', 'tripDuration', 'accommodation', 'tripPreferences'];
+        const requiredBudgetFields = ['plannedBudget', 'currency'];
+
+        for (let field of requiredTripFields) {
+            if (!tripData[field]) {
+                setError(`Field ${field} is required.`);
+                setSuccess();
+                return;
+            }
+        }
+
+        for (let field of requiredBudgetFields) {
+            if (!budgetData[field]) {
+                setError(`Field ${field} is required.`);
+                setSuccess();
+                return;
+            }
+        }
+
         const tripDataWithConvertedValues = {
             ...tripData,
             plannedBudget: parseFloat(tripData.plannedBudget), 
@@ -60,6 +80,7 @@ const CreateTripForm = () => {
 
         if (!userToken) {
             console.error("User is not authenticated, no token found.");
+            setError("User is not authenticated, no token found.");
             return;
         }
 
@@ -81,7 +102,6 @@ const CreateTripForm = () => {
         };
         
         try {
-            console.log("Data being sent:", JSON.stringify(dataToSend, null, 2));
             const response = await fetch('http://localhost:8000/trip/add', {
                 method: 'POST',
                 headers: {
@@ -92,12 +112,13 @@ const CreateTripForm = () => {
             });
             
             if (response.ok) {
-                console.log("Trip data successfully submitted!");
+                setSuccess("Trip data successfully submitted!");
+                setError();
             } else {
-                console.error("Failed to submit trip data");
+                setError("Failed to submit trip data");
             }
         } catch (error) {
-            console.error("Error submitting trip data:", error);
+            setError(error);
         }
     };
 
@@ -136,16 +157,34 @@ const CreateTripForm = () => {
                     onChange={handleTripChange}
                 />
                 )}
-                <div className="flex justify-center gap-10 mt-5">
-                    {currentStep > 0 && (
-                        <button type="button" onClick={prevStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Previous</button>
+
+                <div className="flex justify-center items-center flex-col gap-5">
+
+                    <div className="flex justify-center gap-5">
+                        {error && (
+                                <div className="error mt-3 text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-lg shadow-md flex items-center space-x-3">
+                                    <i className="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                                    <p className="text-sm font-medium">{error}</p>
+                                </div>
+                            )}
+                    </div>
+                    {success && (
+                        <div className="mt-3 text-green-700 w-1/2 bg-custom-white text-center rounded-xl font-bold p-2 shadow-lg flex items-center justify-center space-x-3 success-message">
+                            <i className="fas fa-check-circle text-green-500 text-md"></i>
+                            <p className="text-md">{success}</p>
+                        </div>
                     )}
-                    {currentStep < 2 && (
-                        <button type="button" onClick={nextStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Next</button>
-                    )}
-                    {currentStep === 2 && (
-                        <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
-                    )}
+                    <div className="flex justify-center gap-10">
+                        {currentStep > 0 && (
+                            <button type="button" onClick={prevStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Previous</button>
+                        )}
+                        {currentStep < 2 && (
+                            <button type="button" onClick={nextStep} className="p-2 w-32 bg-custom-white text-custom-dark-blue rounded">Next</button>
+                        )}
+                        {currentStep === 2 && (
+                            <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded">Submit</button>
+                        )}
+                    </div>
                 </div>
             </form>
         </div>
