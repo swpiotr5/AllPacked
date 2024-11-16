@@ -1,7 +1,7 @@
 import React from 'react';
 import sun from '../../assets/sun.png';
 
-const NextFiveDays = () => {
+const NextFiveDays = ({nextFiveDaysForecast}) => {
 
     return (
         <div className="flex flex-col bg-custom-light-blue mt-5 p-3 w-full h-full rounded-xl">
@@ -10,42 +10,42 @@ const NextFiveDays = () => {
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-lighter-blue rounded-xl">
                     <p>Tomorrow</p>
                     <img
-                    src={sun}
-                    className="w-1/4 object-cover"
+                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[0].mostFrequentIcon}@2x.png`}
+                    className="w-full h-1/2 object-cover"
                     />
-                    <p>24°C</p>
+                    <p>{nextFiveDaysForecast[0].averageTemp}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-lighter-blue rounded-xl">
-                    <p>Wednesday</p>
+                    <p>{nextFiveDaysForecast[1].dayOfWeek}</p>
                     <img
-                    src={sun}
-                    className="w-1/4 object-cover"
+                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[1].mostFrequentIcon}@2x.png`}
+                    className="w-full h-1/2 object-cover"
                     />
-                    <p>24°C</p>
+                    <p>{nextFiveDaysForecast[1].averageTemp}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-lighter-blue rounded-xl">
-                    <p>Thursday</p>
+                    <p>{nextFiveDaysForecast[2].dayOfWeek}</p>
                     <img
-                    src={sun}
-                    className="w-1/4 object-cover"
+                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[2].mostFrequentIcon}@2x.png`}
+                    className="w-full h-1/2 object-cover"
                     />
-                    <p>24°C</p>
+                    <p>{nextFiveDaysForecast[2].averageTemp}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-lighter-blue rounded-xl">
-                    <p>Friday</p>
+                    <p>{nextFiveDaysForecast[3].dayOfWeek}</p>
                     <img
-                    src={sun}
-                    className="w-1/4 object-cover"
+                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[3].mostFrequentIcon}@2x.png`}
+                    className="w-full h-1/2 object-cover"
                     />
-                    <p>24°C</p>
+                    <p>{nextFiveDaysForecast[3].averageTemp}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-lighter-blue rounded-xl">
-                    <p>Saturday</p>
+                    <p>{nextFiveDaysForecast[4].dayOfWeek}</p>
                     <img
-                    src={sun}
-                    className="w-1/4 object-cover"
+                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[4].mostFrequentIcon}@2x.png`}
+                    className="w-full h-1/2 object-cover"
                     />
-                    <p>24°C</p>
+                    <p>{nextFiveDaysForecast[4].averageTemp}</p>
                 </div>
             </div>
         </div>

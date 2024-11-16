@@ -26,12 +26,10 @@ export const getCurrentWeather = async (city, country) => {
 export const getForecastFiveDays = async (city, country) => {
     try {
         const countryCode = getCode(country);
-        if (!countryCode) {
-            throw new Error(`Invalid country name: ${country}`);
-        }
+        const location = countryCode ? `${city},${countryCode}` : city;
         const response = await axios.get(`${BASE_URL}/forecast`, {
             params: {
-                q: `${city},${countryCode}`,
+                q: location,
                 appid: API_KEY,
                 units: 'metric'
             }

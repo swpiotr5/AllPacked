@@ -19,8 +19,20 @@ const TripSelector = ({ trip, onTripChange }) => {
 
     const handleSelectChange = (e) => {
         const selectedTripName = e.target.value;
-        const selectedTrip = trips.find(trip => trip.tripName === selectedTripName);
-        onTripChange(selectedTrip);
+        if (selectedTripName === "") {
+            onTripChange({
+                tripName: '',
+                country: '',
+                city: '',
+                date: '',
+                tripDuration: 0,
+                accommodation: 'tent',
+                tripPreferences: 'city',
+            });
+        } else {
+            const selectedTrip = trips.find(trip => trip.tripName === selectedTripName);
+            onTripChange(selectedTrip);
+        }
     };
 
     return (
