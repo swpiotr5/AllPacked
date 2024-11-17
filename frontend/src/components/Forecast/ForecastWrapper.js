@@ -49,8 +49,8 @@ const ForecastWrapper = ({trip}) => {
     }
 
     if (!weather || !forecast) {
-        return <div className="error mt-3 bg-yellow-100 border-l-4 border-yellow-500 p-3 rounded-lg shadow-md flex items-center space-x-3">
-        <p className="text-sm font-medium">Loading...</p>
+        return <div className="error mt-3 p-3 rounded-lg shadow-md flex items-center space-x-3">
+        <p className="text-sm font-medium text-custom-white">Loading...</p>
     </div>;
     }
 
