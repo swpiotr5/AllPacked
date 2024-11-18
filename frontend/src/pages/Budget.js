@@ -23,6 +23,15 @@ const Budget = ({setIsAuth}) => {
         currency: 'EUR',
     });
 
+    const [refreshData, setRefreshData] = useState(false);
+
+    useEffect(() => {
+        const savedTrip = localStorage.getItem('selectedTrip');
+        if (savedTrip) {
+            setTrip(JSON.parse(savedTrip));
+        }
+    }, []);
+    
     useEffect(() => {
         const fetchBudget = async (tripName) => {
             try {
@@ -44,10 +53,11 @@ const Budget = ({setIsAuth}) => {
         if (trip.tripName) {
             fetchBudget(trip.tripName);
         }
-    }, [trip.tripName]);
+    }, [trip.tripName, refreshData]);
 
     const handleTripChange = (selectedTrip) => {
         setTrip(selectedTrip);
+        localStorage.setItem('selectedTrip', JSON.stringify(selectedTrip));
         console.log(selectedTrip);
     };
 
@@ -60,7 +70,7 @@ const Budget = ({setIsAuth}) => {
                     <TripBudgetInformation  trip={trip} budget={budget}/>
                 )}
                 {trip.tripName && (
-                    <ManageExpenses />
+                    <ManageExpenses trip={trip} setRefreshData={setRefreshData}/>
                 )}
             </Body>
         </div>

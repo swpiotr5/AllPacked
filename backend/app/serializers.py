@@ -93,11 +93,22 @@ class TransportSuggestionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TransportSuggestions
         fields = '__all__'
-    
+
 class ExpenseSerializer(serializers.ModelSerializer):
+    budget = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Expense
-        fields = '__all__'
+        fields = ['expense_id', 'budget', 'description', 'name', 'exp_type', 'amount', 'date']
+
+    def create(self, validated_data):
+        budget = self.context.get('budget')
+        if not budget:
+            raise serializers.ValidationError({"budget": "This field is required."})
+        
+        validated_data['budget'] = budget
+        return Expense.objects.create(**validated_data)
+
 
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:

@@ -6,6 +6,7 @@ from .models import User
 from .serializers import UserSerializer
 from .models import Trip
 from .serializers import RegisterSerializer
+from .serializers import ExpenseSerializer
 from .models import Budget
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
@@ -109,6 +110,43 @@ class GetBudgetView(APIView):
                         'currency': budget.currency,
                     }
                     return Response(budget_data, status=status.HTTP_200_OK)
+                except Budget.DoesNotExist:
+                    return Response({"error": "Budget not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class AddExpenseView(APIView):
+    def create_expense(self, expense_data, budget):
+        context = {'budget': budget}
+        expense_serializer = ExpenseSerializer(data=expense_data, context=context)
+        
+        if expense_serializer.is_valid():
+            expense = expense_serializer.save()
+            budget.spentBudget = (budget.spentBudget or 0) + expense.amount
+            budget.save()
+            return True
+        else:
+            print("Errors:", expense_serializer.errors)  
+            return expense_serializer.errors
+        
+    def post(self, request):
+        user = request.user
+        expense_data = request.data.get('expense')
+        tripName = request.data.get('tripName')
+
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    budget = Budget.objects.get(trip=trip)
+                    if budget:
+                        expense = self.create_expense(expense_data, budget)
+                        if expense is True:
+                            return Response({"success": "Expense added successfully"}, status=status.HTTP_201_CREATED)
+                        else:
+                            return Response({"error": "Invalid expense data", "details": expense}, status=status.HTTP_400_BAD_REQUEST)
                 except Budget.DoesNotExist:
                     return Response({"error": "Budget not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
             else:
