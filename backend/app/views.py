@@ -6,6 +6,7 @@ from .models import User
 from .serializers import UserSerializer
 from .models import Trip
 from .serializers import RegisterSerializer
+from .models import Budget
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
 from rest_framework import status
@@ -90,5 +91,27 @@ class GetTripsView(APIView):
 
             serializer = TripSerializer(valid_trips, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class GetBudgetView(APIView):
+    def get(self, request):
+        user = request.user
+        tripName = request.query_params.get('tripName')
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    budget = Budget.objects.get(trip=trip)
+                    budget_data = {
+                        'plannedBudget': budget.plannedBudget,
+                        'spentBudget': budget.spentBudget,
+                        'currency': budget.currency,
+                    }
+                    return Response(budget_data, status=status.HTTP_200_OK)
+                except Budget.DoesNotExist:
+                    return Response({"error": "Budget not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)

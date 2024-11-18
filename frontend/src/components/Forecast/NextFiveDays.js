@@ -5,6 +5,7 @@ const NextFiveDays = ({nextFiveDaysForecast}) => {
     return (
         <div className="flex flex-col bg-custom-light-blue mt-5 p-3 w-full h-full rounded-xl">
             <p>next 5 days</p>
+            {console.log(nextFiveDaysForecast)}
             <div className="grid grid-cols-5 gap-10 pt-4 pb-4 pl-2 pr-2 w-full h-full">
                 <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
                     <p>Tomorrow</p>

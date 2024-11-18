@@ -100,18 +100,27 @@ const ForecastWrapper = ({trip}) => {
         return acc;
     }, {});
     const today = new Date().getUTCDate();
+
     const nextFiveDaysForecast = Object.values(groupedForecast)
     .filter(day => day.dayOfWeek !== today)
     .slice(0, 5)
     .map(day => {
-        const averageTemp = day.temperatures.reduce((sum, temp) => sum + temp, 0) / day.temperatures.length;
-        const iconFrequency = day.icons.reduce((acc, icon) => {
-            if (icon.endsWith('d')) {
+        const averageTemp = day.temperatures.length > 0 ? day.temperatures.reduce((sum, temp) => sum + temp, 0) / day.temperatures.length : 0;
+        let iconFrequency = day.icons.reduce((acc, icon) => {
+            if (icon.endsWith('d')) { 
                 acc[icon] = (acc[icon] || 0) + 1;
             }
             return acc;
         }, {});
-        const mostFrequentIcon = Object.keys(iconFrequency).reduce((a, b) => iconFrequency[a] > iconFrequency[b] ? a : b);
+        if (Object.keys(iconFrequency).length === 0) {
+            iconFrequency = day.icons.reduce((acc, icon) => {
+                if (icon.endsWith('n')) { 
+                    acc[icon] = (acc[icon] || 0) + 1;
+                }
+                return acc;
+            }, {});
+        }
+        const mostFrequentIcon = Object.keys(iconFrequency).reduce((a, b) => iconFrequency[a] > iconFrequency[b] ? a : b, '');
 
         return {
             dayOfWeek: day.dayOfWeek,
@@ -119,7 +128,6 @@ const ForecastWrapper = ({trip}) => {
             mostFrequentIcon
         };
     });
-
 
     return (
         <div className='relative grid grid-cols-3 mt-12 mb-5 p-4 gap-4 bg-custom-medium-blue items-center h-auto w-2/3 rounded-xl'>
