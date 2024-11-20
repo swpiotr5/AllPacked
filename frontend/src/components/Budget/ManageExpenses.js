@@ -7,7 +7,7 @@ const ManageExpenses = ({trip, setRefreshData}) => {
     return (
         <div className="max-w-screen-xl w-full h-full flex justify-center gap-10 items-center mt-12 mb-12 flex-col text-custom-white uppercase tracking-wide font-semibold">
             <AddNewExpense trip={trip} setRefreshData={setRefreshData}></AddNewExpense>
-            <ModifyExistingExpense></ModifyExistingExpense>
+            <ModifyExistingExpense trip={trip}></ModifyExistingExpense>
             <Details></Details>
         </div>
     );

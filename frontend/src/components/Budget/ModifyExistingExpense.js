@@ -2,26 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 import EditableDivToInput from './EditableDivToInput';
 import EditableDivToSelect from './EditableDivToSelect';
+import axios from "../../interceptor/axios";
 
-const ModifyExistingExpense = () => {
+const ModifyExistingExpense = ({ trip }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [selectedExpense, setSelectedExpense] = useState(null);
 
     useEffect(() => {
-        const mockExpenses = [
-            { id: '1', expenseName: 'Local pizza', description: 'Delicious local pizza', cost: '15$', type: 'Food' },
-            { id: '2', expenseName: 'Eminem signed poster', description: 'Poster signed by Eminem', cost: '100$', type: 'Souvenir' },
-            { id: '3', expenseName: 'Entry museum ticket', description: 'Ticket to the museum', cost: '20$', type: 'Entertainment' },
-        ];
-        setExpenses(mockExpenses);
-    }, []);
+        const fetchExpenses = async () => {
+            try {
+                const response = await axios.get('/trip/getallexpenses', {
+                    params: {
+                        tripName: trip.tripName
+                    }
+                });
+                setExpenses(response.data);
+            } catch (error) {
+                console.error('Error fetching expenses:', error);
+            }
+        };
+
+        if (trip.tripName) {
+            fetchExpenses();
+        }
+    }, [trip.tripName]);
 
     const handleExpenseChange = (e) => {
         if (e && e.target) {
-            const selectedExpenseId = e.target.value;
-            const expense = expenses.find(exp => exp.id === selectedExpenseId);
+            const selectedExpenseId = parseInt(e.target.value, 10); 
+            const expense = expenses.find(exp => exp.expense_id === selectedExpenseId);
             setSelectedExpense(expense);
+            console.log(expenses);
+            console.log('Selected Expense:', expense); 
         }
     };
 
@@ -30,7 +43,17 @@ const ModifyExistingExpense = () => {
             ...prevExpense,
             [field]: value
         }));
-        setExpenses(prevExpenses => prevExpenses.map(exp => exp.id === selectedExpense.id ? { ...exp, [field]: value } : exp));
+        setExpenses(prevExpenses => prevExpenses.map(exp => exp.expense_id === selectedExpense.expense_id ? { ...exp, [field]: value } : exp));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.put('/trip/putexpense', selectedExpense);
+            console.log('Expense updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating expense:', error);
+        }
     };
 
     const onExtendElement = (e) => {
@@ -66,17 +89,17 @@ const ModifyExistingExpense = () => {
                 >
                     <option value="">Select expense</option>
                     {expenses.map(expense => (
-                        <option key={expense.id} value={expense.id}>{expense.expenseName}</option>
+                        <option key={expense.expense_id} value={expense.expense_id}>{expense.name}</option>
                     ))}
                 </select>
             </div>
             {selectedExpense && (
-                <div className='flex flex-col justify-center items-center w-full gap-6'>
+                <form className='flex flex-col justify-center items-center w-full gap-6' onSubmit={handleSubmit}>
                     <div className="grid grid-cols-4 gap-10 w-full pl-5 pr-5 mt-5">
                         <div>
                             <p>Expense name</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
-                                <EditableDivToInput value={selectedExpense.expenseName} onChange={(value) => handleFieldChange('expenseName', value)} />
+                                <EditableDivToInput value={selectedExpense.name} onChange={(value) => handleFieldChange('name', value)} />
                             </div>
                         </div>
                         <div>
@@ -88,20 +111,20 @@ const ModifyExistingExpense = () => {
                         <div>
                             <p>Cost</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
-                                <EditableDivToInput value={selectedExpense.cost} onChange={(value) => handleFieldChange('cost', value)} />
+                                <EditableDivToInput value={selectedExpense.amount} onChange={(value) => handleFieldChange('amount', value)} />
                             </div>
                         </div>
                         <div>
                             <p>Type</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
-                                <EditableDivToSelect value={selectedExpense.type} onChange={(value) => handleFieldChange('type', value)} />
+                                <EditableDivToSelect value={selectedExpense.exp_type} onChange={(value) => handleFieldChange('exp_type', value)} />
                             </div>
                         </div>
                     </div>
                     <div className="w-full flex justify-center">
                         <button type="submit" className="p-2 w-32 bg-custom-blue text-custom-white rounded-2xl">Submit</button>
                     </div>
-                </div>
+                </form>
             )}
         </div>
     );

@@ -8,6 +8,7 @@ from .models import Trip
 from .serializers import RegisterSerializer
 from .serializers import ExpenseSerializer
 from .models import Budget
+from .models import Expense
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
 from rest_framework import status
@@ -151,5 +152,45 @@ class AddExpenseView(APIView):
                     return Response({"error": "Budget not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class GetExpensesView(APIView):
+    def get(self, request):
+        user = request.user
+        tripName = request.query_params.get('tripName')
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    budget = Budget.objects.get(trip=trip)
+                    if budget:
+                        expenses = Expense.objects.filter(budget=budget)
+                        expenses_data = ExpenseSerializer(expenses, many=True).data
+                        return Response(expenses_data, status=status.HTTP_200_OK)
+                except Budget.DoesNotExist:
+                    return Response({"error": "Budget not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class ModifyExpenseView(APIView):
+    def put(self, request):
+        user = request.user
+        expense_data = request.data
+        expense_id = expense_data.get('expense_id')
+        
+        if user.is_authenticated:
+            try:
+                expense = Expense.objects.get(expense_id=expense_id, budget__trip__user=user)
+                expense_serializer = ExpenseSerializer(expense, data=expense_data, partial=True)
+                if expense_serializer.is_valid():
+                    expense_serializer.save()
+                    return Response(expense_serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(expense_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Expense.DoesNotExist:
+                return Response({"error": "Expense not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
