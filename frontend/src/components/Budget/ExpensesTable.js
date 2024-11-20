@@ -12,10 +12,10 @@ const ExpensesTable = ({ expenses }) => {
             <div className="overflow-y-auto h-full custom-scrollbar pr-1">
                 {expenses.map((expense, index) => (
                     <div key={expense.id} className={`grid grid-cols-4 w-full h-10 items-center bg-custom-light-blue rounded-3xl mt-2`}>
-                        <div className="text-center">{expense.expenseName}</div>
+                        <div className="text-center">{expense.name}</div>
                         <div className="text-center">{expense.description}</div>
-                        <div className="text-center">{expense.cost}</div>
-                        <div className="text-center">{expense.type}</div>
+                        <div className="text-center">{expense.amount}</div>
+                        <div className="text-center">{expense.exp_type}</div>
                     </div>
                 ))}
             </div>
