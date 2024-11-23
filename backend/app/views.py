@@ -8,13 +8,15 @@ from .models import Trip
 from .serializers import RegisterSerializer
 from .serializers import ExpenseSerializer
 from .models import Budget
+from .models import Planner
 from .models import Expense
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
+from .serializers import PlaceToVisitSerializer
 from rest_framework import status
 from django.db import transaction
 from datetime import datetime, timedelta
-
+from .services.openai_service import OpenAIService 
 # User APIs
 
 class RegisterView(APIView):
@@ -42,6 +44,14 @@ class AddTripView(APIView):
         else:
             return trip_serializer.errors
         
+    def create_planner(self):
+        if not hasattr(self, 'trip'):
+            return {"error": "Trip was not created successfully"}
+        
+        planner = Planner.objects.create(trip=self.trip)
+        self.planner = planner
+        return planner
+        
     def create_budget(self, budget_data):
         if not hasattr(self, 'trip'):
             return {"error": "Trip was not created successfully"}
@@ -56,28 +66,50 @@ class AddTripView(APIView):
             print("Errors:", budget_serializer.errors)  
             return budget_serializer.errors
         
+    def create_places_to_visit_suggestions(self, trip_data):
+        openai_service = OpenAIService()
+        response = openai_service.generate_places_to_visit_suggestions(trip_data)
+        formatted_suggestions = openai_service.format_places_to_visit_suggestions(response)
+        
+        errors = []
+        for suggestion in formatted_suggestions:
+            suggestion['planner'] = self.planner.planner_id
+            places_to_visit_serializer = PlaceToVisitSerializer(data=suggestion)
+            if places_to_visit_serializer.is_valid():
+                places_to_visit_serializer.save()
+            else:
+                errors.append(places_to_visit_serializer.errors)
+        
+        if errors:
+            print("Errors:", errors)
+            return {"errors": errors}
+        return True
+    
     def post(self, request):
         trip_data = request.data.get('trip')
         budget_data = request.data.get('budget')
             
-        user = request.user 
-        if user is None:
-            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
-
-        try:
-            with transaction.atomic():
-                trip = self.create_trip(trip_data, user)
-                if not trip:
-                    return Response({"error": "Invalid trip data", "details": trip}, status=status.HTTP_400_BAD_REQUEST)
-                
-                self.create_budget(budget_data)
-                
-            return Response({"message": "Records added successfully"}, status=status.HTTP_201_CREATED)
+        user = request.user
+        trip = self.create_trip(trip_data, user)
         
-        except Exception as e:
-            print("Error:", str(e))  
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        if isinstance(trip, Trip):
+            planner = self.create_planner()
+            if isinstance(planner, dict) and 'error' in planner:
+                return Response(planner, status=status.HTTP_400_BAD_REQUEST)
+            
+            budget_result = self.create_budget(budget_data)
+            if budget_result is not True:
+                return Response(budget_result, status=status.HTTP_400_BAD_REQUEST)
+            
+            suggestions_result = self.create_places_to_visit_suggestions(trip_data)
+            if isinstance(suggestions_result, dict) and 'errors' in suggestions_result:
+                return Response(suggestions_result, status=status.HTTP_400_BAD_REQUEST)
+            
+            response_data = TripSerializer(trip).data
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(trip, status=status.HTTP_400_BAD_REQUEST)
+    
 class GetTripsView(APIView):
     def get(self, request):
         user = request.user

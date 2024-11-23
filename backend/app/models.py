@@ -46,9 +46,12 @@ class PlaceToVisit(models.Model):
     place_to_visit_id = models.AutoField(primary_key=True)
     planner = models.ForeignKey(Planner, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
+    type = models.CharField(max_length=50)
+    cost = models.CharField(max_length=50)
+    duration = models.CharField(max_length=50)
+    priority = models.CharField(max_length=50)
+    description = models.TextField()
+    tips = models.JSONField()
 
 class ItemChecklist(models.Model):
     item_checklist_id = models.AutoField(primary_key=True)
