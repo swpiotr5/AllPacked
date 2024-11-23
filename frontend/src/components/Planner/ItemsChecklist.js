@@ -3,7 +3,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import AddItemForm from './AddItemForm';
 import ToPackList from './ToPackList';
 
-const ItemsChecklist = () => {
+const ItemsChecklist = ({ setLeftToPack } ) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [itemsStatus, setItemsStatus] = useState([
         { title: "Passport", id: 1, is_packed: false },
@@ -63,7 +63,12 @@ const ItemsChecklist = () => {
     };
 
     const alreadyPacked = itemsStatus.filter(item => item.is_packed);
-    const leftToPack = itemsStatus.filter(item => !item.is_packed);
+
+    useEffect(() => {
+        const leftToPackItems = itemsStatus.filter(item => !item.is_packed);
+        setLeftToPack(leftToPackItems.length);
+    }, [itemsStatus, setLeftToPack]);
+
 
     return (
         <div id="wrapper-checklist" className={`flex w-full p-3 pb-5 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden ${isExpanded ? 'h-auto' : 'h-12'} rounded-xl transition-all duration-300`}>
@@ -72,7 +77,7 @@ const ItemsChecklist = () => {
                 <p className="pl-5">View items checklist</p>
             </div>
             <AddItemForm addItem={addItem}/>
-            <ToPackList items={leftToPack} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>
+            <ToPackList items={itemsStatus.filter(item => !item.is_packed)} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
             <span className="text-xs ml-14">Items Packed: {alreadyPacked.length}</span>
             {alreadyPacked.length > 0 ? (
                 <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>

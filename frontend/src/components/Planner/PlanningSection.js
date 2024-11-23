@@ -3,10 +3,10 @@ import ItemsChecklist from './ItemsChecklist';
 import TransportationSuggestions from './TransportationSuggestions';
 import PlacesToVisit from './PlacesToVisit';
 
-const PlanningSection = () => {
+const PlanningSection = ({setLeftToPack}) => {
     return (
         <div className="max-w-screen-xl w-full h-full flex justify-center gap-10 items-center mt-12 mb-12 flex-col text-custom-white uppercase tracking-wide font-semibold">
-            <ItemsChecklist></ItemsChecklist>
+            <ItemsChecklist setLeftToPack={setLeftToPack}></ItemsChecklist>
             <PlacesToVisit></PlacesToVisit>
             <TransportationSuggestions></TransportationSuggestions>
         </div>

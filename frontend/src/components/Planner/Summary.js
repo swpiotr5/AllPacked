@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-const Summary = () => {
-    const cities = "Rome";
-    const leftToPack = 5;
+const Summary = ({trip, leftToPack}) => {
+    const city = trip.city;
     const docuNeeded = "ID";
     const vaccinationRequired = "No";
 
     return (
         <div className="grid grid-cols-5 p-8 gap-8 mt-12 w-full h-64 bg-custom-blue max-w-screen-xl rounded-xl text-md uppercase tracking-wide font-bold text-custom-white">
             <div className="w-full bg-custom-dark-blue rounded-xl p-2 flex flex-col justify-evenly gap-2 items-center">
-                <p>Cities to visit</p>
-                <p className='text-2xl text-custom-blue'>{cities}</p>
+                <p>City to visit</p>
+                <p className='text-2xl text-custom-blue'>{city}</p>
             </div>
             <div className="w-full bg-custom-dark-blue rounded-xl p-2 flex flex-col justify-evenly gap-2 items-center">
                 <p>Items left to pack</p>

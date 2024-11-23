@@ -7,6 +7,7 @@ import PlanningSection from '../components/Planner/PlanningSection';
 
 const Planner = ({setIsAuth}) => {
     const [trip, setTrip] = useState('');
+    const [leftToPack, setLeftToPack] = useState(0);
 
     useEffect(() => {
         const savedTrip = localStorage.getItem('selectedTrip');
@@ -27,10 +28,10 @@ const Planner = ({setIsAuth}) => {
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
                 {trip && (
-                    <Summary></Summary>
+                    <Summary trip={trip} leftToPack={leftToPack}></Summary>
                 )}
                 {trip && (
-                    <PlanningSection></PlanningSection>
+                    <PlanningSection setLeftToPack={setLeftToPack}></PlanningSection>
                 )}
             </Body>
         </div>

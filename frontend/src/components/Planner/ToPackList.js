@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ToPackItem from './ToPackItem';
 
 const ToPackList = ({ items, ChangeItemStatus, removeItem }) => {
-
     return (
         <ol className="w-full flex flex-col justify-center items-center gap-3">
             {items && items.length > 0 && (
