@@ -31,7 +31,7 @@ const Planner = ({setIsAuth}) => {
                     <Summary trip={trip} leftToPack={leftToPack}></Summary>
                 )}
                 {trip && (
-                    <PlanningSection setLeftToPack={setLeftToPack}></PlanningSection>
+                    <PlanningSection trip={trip} setLeftToPack={setLeftToPack}></PlanningSection>
                 )}
             </Body>
         </div>

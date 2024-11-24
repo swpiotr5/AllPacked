@@ -9,6 +9,7 @@ from .serializers import RegisterSerializer
 from .serializers import ExpenseSerializer
 from .models import Budget
 from .models import Planner
+from .models import PlaceToVisit
 from .models import Expense
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
@@ -226,3 +227,24 @@ class ModifyExpenseView(APIView):
                 return Response({"error": "Expense not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class GetPlacesView(APIView):
+    def get(self, request):
+        user = request.user
+        tripName = request.query_params.get('tripName')
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    planner = Planner.objects.get(trip=trip)
+                    if planner:
+                        places = PlaceToVisit.objects.filter(planner=planner)
+                        places_data = PlaceToVisitSerializer(places, many=True).data
+                        return Response(places_data, status=status.HTTP_200_OK)
+                except Budget.DoesNotExist:
+                    return Response({"error": "Planner not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        

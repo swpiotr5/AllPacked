@@ -1,49 +1,32 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 import Places from './Places';
+import axios from "../../interceptor/axios";
 
-const PlacesToVisit = () => {
+const PlacesToVisit = ({trip}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const placesSuggestions = [
-        {
-            name: "Colosseum",
-            type: "Landmark",
-            cost: "16 EUR",
-            duration: "1-2 hrs",
-            priority: "must-see",
-            description: "Ancient arena, iconic site.",
-            tips: ["Book tickets online", "Best in early morning"]
-        },
-        {
-            name: "Vatican Museums",
-            type: "Museum",
-            cost: "17 EUR",
-            duration: "2-3 hrs",
-            priority: "must-see",
-            description: "Art, history, Sistine Chapel.",
-            tips: ["Go early", "Expect crowds"]
-        },
-        {
-            name: "Trevi Fountain",
-            type: "Fountain",
-            cost: "Free",
-            duration: "30 mins",
-            priority: "recommended",
-            description: "Baroque fountain, coin tossing.",
-            tips: ["Visit at night", "Keep small coins"]
-        },
-        {
-            name: "Pantheon",
-            type: "Historical Building",
-            cost: "Free",
-            duration: "30 mins - 1 hr",
-            priority: "must-see",
-            description: "Ancient temple, great dome.",
-            tips: ["Quietest early morning", "Check opening hours"]
+    const [placesSuggestions, setPlacesSuggestions] = useState();
+
+    useEffect(() => {
+        const fetchPlaces = async (tripName) => {
+            try {
+                const response = await axios.get(`/trip/getplaces`, {
+                    params: {
+                        tripName: tripName
+                    }
+                });
+                const placesData = response.data;
+                setPlacesSuggestions(placesData);
+            } catch (error) {
+                console.error('Error fetching budget data:', error);
+            }
+        };
+
+        if (trip.tripName) {
+            fetchPlaces(trip.tripName);
         }
-    ];
-    
+    }, [trip.tripName]);
 
     const onExtendElement = (e) => {
         e.preventDefault();

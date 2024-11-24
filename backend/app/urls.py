@@ -8,5 +8,6 @@ urlpatterns = [
     path("trip/getbudget", views.GetBudgetView.as_view(), name="getbudget"),
     path("trip/addexpense", views.AddExpenseView.as_view(), name="addexpense"),
     path("trip/getallexpenses", views.GetExpensesView.as_view(), name="getallexpenses"),
-    path("trip/putexpense", views.ModifyExpenseView.as_view(), name="putexpense")
+    path("trip/putexpense", views.ModifyExpenseView.as_view(), name="putexpense"),
+    path("trip/getplaces", views.GetPlacesView.as_view(), name="getplaces")
 ]

@@ -31,7 +31,10 @@ const Places = ({placeSuggestions}) => {
             <div>
                 <span className="font-bold text-custom-blue">tips: </span>
                 {placeSuggestions.tips.map((tip, index) => (
-                    <span key={index}>{tip}</span>
+                    <span key={index}>
+                        {tip}
+                        {index < placeSuggestions.tips.length - 1 && ', '}
+                    </span>
                 ))}
             </div>
         </div>
