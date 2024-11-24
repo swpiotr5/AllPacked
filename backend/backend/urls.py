@@ -15,6 +15,7 @@ urlpatterns = [
     path("trip/gettransportmeans", app_views.GetTransportMeansView.as_view(), name="gettransportmeans"),
     path("trip/getitems", app_views.GetItemsView.as_view(), name="getitems"),
     path("trip/putitem", app_views.ModifyItemStatusView.as_view(), name="putitem"),
+    path("trip/additem", app_views.AddNewItemView.as_view(), name="additem"),
     path('admin/', admin.site.urls),
     path('api/', include('app.urls')),
     path('token/', 

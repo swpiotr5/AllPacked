@@ -378,3 +378,33 @@ class ModifyItemStatusView(APIView):
                     return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+class AddNewItemView(APIView):
+    def post(self, request):
+        user = request.user
+        item_data = request.data
+        tripName = item_data.pop('tripName', None)
+
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    planner = Planner.objects.get(trip=trip)
+                    if planner:
+                        items_checklist = ItemChecklist.objects.filter(planner=planner).first()
+                        if items_checklist:
+                            item_data['item_checklist'] = items_checklist.item_checklist_id
+                            item_serializer = ItemSerializer(data=item_data)
+                            if item_serializer.is_valid():
+                                item_serializer.save()
+                                return Response(item_serializer.data, status=status.HTTP_201_CREATED)
+                            else:
+                                return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            return Response({"error": "Item checklist not found for this planner"}, status=status.HTTP_404_NOT_FOUND)
+                except Planner.DoesNotExist:
+                    return Response({"error": "Planner not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)

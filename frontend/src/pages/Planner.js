@@ -22,16 +22,19 @@ const Planner = ({setIsAuth}) => {
         console.log(selectedTrip);
     };
 
+    const [refreshDocs, setRefreshDocs] = useState(false);
+    const [refreshVacc, setRefreshVacc] = useState(false);
+
     return (
         <div>
             <Navbar setIsAuth={setIsAuth}></Navbar>
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
                 {trip && (
-                    <Summary trip={trip} leftToPack={leftToPack}></Summary>
+                    <Summary trip={trip} leftToPack={leftToPack} refreshVacc={refreshVacc} refreshDocs={refreshDocs}></Summary>
                 )}
                 {trip && (
-                    <PlanningSection trip={trip} setLeftToPack={setLeftToPack}></PlanningSection>
+                    <PlanningSection trip={trip} setLeftToPack={setLeftToPack} setRefreshDocs={setRefreshDocs} setRefreshVacc={setRefreshVacc}></PlanningSection>
                 )}
             </Body>
         </div>

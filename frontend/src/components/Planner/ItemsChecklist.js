@@ -4,7 +4,7 @@ import AddItemForm from './AddItemForm';
 import ToPackList from './ToPackList';
 import axios from "../../interceptor/axios";
 
-const ItemsChecklist = ({ trip, setLeftToPack } ) => {
+const ItemsChecklist = ({ trip, setLeftToPack, setRefreshVacc, setRefreshDocs } ) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [items, setItems] = useState([]);
 
@@ -78,11 +78,20 @@ const ItemsChecklist = ({ trip, setLeftToPack } ) => {
         setItems(updatedItems);
     };
 
-    const addItem = (newItem) => {
-        setItems(prevItems => [
-            ...prevItems,
-            { ...newItem, item_id: prevItems.length + 1, is_checked: false }
-        ]);
+    const addItem = async (newItem) => {
+        try {
+            const response = await axios.post('/trip/additem', newItem);
+            const addedItem = response.data;
+            setItems(prevItems => [
+                ...prevItems,
+                { ...addedItem, item_id: prevItems.length + 1, is_checked: false }
+            ]);
+            console.log('Item added successfully:', addedItem);
+            setRefreshDocs(prev => !prev);
+            setRefreshVacc(prev => !prev);
+        } catch (error) {
+            console.error('Error adding item:', error);
+        }
     };
 
     const alreadyPacked = items.filter(item => item.is_checked);
@@ -99,7 +108,7 @@ const ItemsChecklist = ({ trip, setLeftToPack } ) => {
                 <button id="arrow-checklist" onClick={onExtendElement} className={`text-3xl transition-all duration-300 ${isExpanded ? 'rotate-180' : ''}`}><IoMdArrowDropdown /></button>
                 <p className="pl-5">View items checklist</p>
             </div>
-            <AddItemForm addItem={addItem}/>
+            <AddItemForm setRefreshVacc={setRefreshVacc} setRefreshDocs={setRefreshDocs} trip={trip} addItem={addItem}/>
             <ToPackList items={items.filter(item => !item.is_checked)} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
             <span className="text-xs ml-14">Items Packed: {alreadyPacked.length}</span>
             {alreadyPacked.length > 0 ? (

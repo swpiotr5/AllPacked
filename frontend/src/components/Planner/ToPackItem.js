@@ -9,13 +9,13 @@ const ToPackItem = ({ item, ChangeItemStatus, removeItem }) => {
     };
 
     const handleRemove = () => {
-        removeItem(item.id);  
+        removeItem(item.item_id);  
     };
 
     return (
         <li className="topack_item w-full flex justify-center">
             <div className="w-11/12 bg-custom-dark-blue rounded-3xl h-10 flex items-center justify-between pl-2">
-                {item.is_packed ? (
+                {item.is_checked ? (
                     <AlreadyPackedItem item={item} handleToggle={handleToggle} />
                 ) : (
                     <LeftToPackItem item={item} handleToggle={handleToggle} />
