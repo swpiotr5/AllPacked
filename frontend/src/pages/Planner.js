@@ -30,10 +30,10 @@ const Planner = ({setIsAuth}) => {
             <Navbar setIsAuth={setIsAuth}></Navbar>
             <Body>
                 <TripSelector trip={trip} onTripChange={handleTripChange}></TripSelector>
-                {trip && (
+                {trip.tripName && (
                     <Summary trip={trip} leftToPack={leftToPack} refreshVacc={refreshVacc} refreshDocs={refreshDocs}></Summary>
                 )}
-                {trip && (
+                {trip.tripName && (
                     <PlanningSection trip={trip} setLeftToPack={setLeftToPack} setRefreshDocs={setRefreshDocs} setRefreshVacc={setRefreshVacc}></PlanningSection>
                 )}
             </Body>
