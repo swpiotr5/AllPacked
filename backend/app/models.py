@@ -53,7 +53,7 @@ class Item(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_checklist = models.ForeignKey(ItemChecklist, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    is_checked = models.BooleanField(null=True, blank=True)  # Ustaw domyślnie na None
+    is_checked = models.BooleanField(null=True, blank=True) 
     is_document = models.BooleanField()
     is_vaccination = models.BooleanField()
 

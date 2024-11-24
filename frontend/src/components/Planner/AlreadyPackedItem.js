@@ -7,7 +7,7 @@ const AlreadyPackedItem = ({ item, handleToggle}) => {
             <button id="btn-check" onClick={handleToggle}>
                 <MdOutlineRadioButtonChecked className="text-slate-500"/>
             </button>
-            <span className="pl-2 text-slate-500 line-through">{item.title}</span>
+            <span className="pl-2 text-slate-500 line-through">{item.name}</span>
         </div>
     );
 };

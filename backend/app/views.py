@@ -13,6 +13,7 @@ from .models import Planner
 from .models import PlaceToVisit
 from .models import Expense
 from .models import TransportSuggestions
+from .models import Item
 from .serializers import TripSerializer
 from .serializers import ItemSerializer
 from .serializers import BudgetSerializer
@@ -333,3 +334,47 @@ class GetTransportMeansView(APIView):
                 return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class GetItemsView(APIView):
+    def get(self, request):
+        user = request.user
+        tripName = request.query_params.get('tripName')
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    planner = Planner.objects.get(trip=trip)
+                    if planner:
+                        items_checklist = ItemChecklist.objects.filter(planner=planner).first()
+                        if items_checklist:
+                            items = Item.objects.filter(item_checklist=items_checklist)
+                            items_serializer = ItemSerializer(items, many=True)
+                            return Response(items_serializer.data, status=status.HTTP_200_OK)
+                        else:
+                            return Response({"error": "Item checklist not found for this planner"}, status=status.HTTP_404_NOT_FOUND)
+                except Planner.DoesNotExist:
+                    return Response({"error": "Planner not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class ModifyItemStatusView(APIView):
+    def put(self, request):
+            user = request.user
+            item_data = request.data
+            item_id = item_data.get('item_id')
+            
+            if user.is_authenticated:
+                try:
+                    item = Item.objects.get(item_id=item_id, item_checklist__planner__trip__user=user)
+                    item_serializer = ItemSerializer(item, data=item_data, partial=True)
+                    if item_serializer.is_valid():
+                        item = item_serializer.save()
+                        return Response(item_serializer.data, status=status.HTTP_200_OK)
+                    else:
+                        return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                except Item.DoesNotExist:
+                    return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)

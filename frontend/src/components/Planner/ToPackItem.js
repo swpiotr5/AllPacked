@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 
 const ToPackItem = ({ item, ChangeItemStatus, removeItem }) => {
     const handleToggle = () => {
-        ChangeItemStatus(item.id);
+        ChangeItemStatus(item.item_id);
     };
 
     const handleRemove = () => {

@@ -2,15 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 import AddItemForm from './AddItemForm';
 import ToPackList from './ToPackList';
+import axios from "../../interceptor/axios";
 
-const ItemsChecklist = ({ setLeftToPack } ) => {
+const ItemsChecklist = ({ trip, setLeftToPack } ) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [itemsStatus, setItemsStatus] = useState([
-        { title: "Passport", id: 1, is_packed: false },
-        { title: "Towel", id: 2, is_packed: false },
-        { title: "Boots", id: 3, is_packed: false },
-        { title: "ID", id: 4, is_packed: false },
-    ]);
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const fetchItems = async (tripName) => {
+            try {
+                const response = await axios.get(`/trip/getitems`, {
+                    params: {
+                        tripName: tripName
+                    }
+                });
+                const itemsData = response.data;
+                setItems(itemsData);
+            } catch (error) {
+                console.error('Error fetching budget data:', error);
+            }
+        };
+
+        if (trip.tripName) {
+            fetchItems(trip.tripName);
+        }
+    }, [trip.tripName]);
 
     const messages = [
         "Looks like you’re traveling *very* light... ready to start packing?",
@@ -42,32 +58,39 @@ const ItemsChecklist = ({ setLeftToPack } ) => {
         setIsExpanded(prevState => !prevState);
     };
 
-    const ChangeItemStatus = (id) => {
-        const updatedItems = itemsStatus.map(item =>
-            item.id === id ? { ...item, is_packed: !item.is_packed } : item
+    const ChangeItemStatus = async (id) => {
+        const updatedItems = items.map(item =>
+            item.item_id === id ? { ...item, is_checked: !item.is_checked } : item
         );
-        setItemsStatus(updatedItems);
+        setItems(updatedItems);
+    
+        const updatedItem = updatedItems.find(item => item.item_id === id);
+        try {
+            const response = await axios.put('/trip/putitem', updatedItem);
+            console.log('Item updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating item:', error);
+        }
     };
 
     const removeItem = (id) => {
-        const updatedItems = itemsStatus.filter(item => item.id !== id);
-        setItemsStatus(updatedItems);
+        const updatedItems = items.filter(item => item.item_id !== id);
+        setItems(updatedItems);
     };
-    
 
     const addItem = (newItem) => {
-        setItemsStatus(prevItems => [
+        setItems(prevItems => [
             ...prevItems,
-            { ...newItem, id: prevItems.length + 1, is_packed: false }
+            { ...newItem, item_id: prevItems.length + 1, is_checked: false }
         ]);
     };
 
-    const alreadyPacked = itemsStatus.filter(item => item.is_packed);
+    const alreadyPacked = items.filter(item => item.is_checked);
 
     useEffect(() => {
-        const leftToPackItems = itemsStatus.filter(item => !item.is_packed);
+        const leftToPackItems = items.filter(item => !item.is_checked);
         setLeftToPack(leftToPackItems.length);
-    }, [itemsStatus, setLeftToPack]);
+    }, [items, setLeftToPack]);
 
 
     return (
@@ -77,7 +100,7 @@ const ItemsChecklist = ({ setLeftToPack } ) => {
                 <p className="pl-5">View items checklist</p>
             </div>
             <AddItemForm addItem={addItem}/>
-            <ToPackList items={itemsStatus.filter(item => !item.is_packed)} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
+            <ToPackList items={items.filter(item => !item.is_checked)} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
             <span className="text-xs ml-14">Items Packed: {alreadyPacked.length}</span>
             {alreadyPacked.length > 0 ? (
                 <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>

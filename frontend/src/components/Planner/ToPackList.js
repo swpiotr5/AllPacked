@@ -7,7 +7,7 @@ const ToPackList = ({ items, ChangeItemStatus, removeItem }) => {
             {items && items.length > 0 && (
                 items.map((item) => (
                     <ToPackItem 
-                        key={item.id} 
+                        key={item.item_id} 
                         item={item} 
                         ChangeItemStatus={ChangeItemStatus} 
                         removeItem={removeItem} 

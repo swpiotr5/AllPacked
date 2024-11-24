@@ -7,7 +7,7 @@ const LeftToPackItem = ({ item, handleToggle}) => {
             <button id="btn-check" onClick={handleToggle}>
                 <MdOutlineRadioButtonUnchecked />
             </button>
-            <span className="pl-2">{item.title}</span>
+            <span className="pl-2">{item.name}</span>
         </div>
     );
 };
