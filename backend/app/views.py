@@ -21,6 +21,7 @@ from .serializers import TransportSuggestionsSerializer
 from rest_framework import status
 from django.db import transaction
 from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from .services.openai_service import OpenAIService 
 # User APIs
 
@@ -148,23 +149,29 @@ class AddTripView(APIView):
             if budget_result is not True:
                 return Response(budget_result, status=status.HTTP_400_BAD_REQUEST)
             
-            places_suggestions_result = self.create_places_to_visit_suggestions(trip_data)
-            if isinstance(places_suggestions_result, dict) and 'errors' in places_suggestions_result:
-                return Response(places_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
-            
-            transport_suggestions_result = self.create_transport_suggestions(trip_data)
-            if isinstance(transport_suggestions_result, dict) and 'errors' in transport_suggestions_result:
-                return Response(transport_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
-            
-            packing_suggestions_result = self.create_packing_suggestions(trip_data)
-            if isinstance(packing_suggestions_result, dict) and 'errors' in packing_suggestions_result:
-                return Response(packing_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
+            with ThreadPoolExecutor() as executor:
+                futures = {
+                    executor.submit(self.create_places_to_visit_suggestions, trip_data): 'places',
+                    executor.submit(self.create_transport_suggestions, trip_data): 'transport',
+                    executor.submit(self.create_packing_suggestions, trip_data): 'packing'
+                }
+                
+                results = {}
+                for future in as_completed(futures):
+                    task_name = futures[future]
+                    try:
+                        result = future.result()
+                        if isinstance(result, dict) and 'errors' in result:
+                            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+                        results[task_name] = result
+                    except Exception as e:
+                        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
             response_data = TripSerializer(trip).data
             return Response(response_data, status=status.HTTP_201_CREATED)
         else:
             return Response(trip, status=status.HTTP_400_BAD_REQUEST)
-    
+        
 class GetTripsView(APIView):
     def get(self, request):
         user = request.user
