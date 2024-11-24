@@ -40,11 +40,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        # Haszowanie hasła przed zapisaniem
         password = validated_data.pop('password', None)
         hashed_password = make_password(password)
         
-        # Tworzenie użytkownika z odpowiednimi danymi
         user = User.objects.create(password=hashed_password, **validated_data)
         return user
 
@@ -59,11 +57,6 @@ class TripSerializer(serializers.ModelSerializer):
         model = Trip
         fields = ['accommodation', 'country', 'city', 'date', 'tripName', 'tripDuration', 'tripPreferences', 'user']
 
-class ForecastSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Forecast
-        fields = '__all__'
-
 class PlannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planner
@@ -73,6 +66,11 @@ class PlaceToVisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceToVisit
         fields = ['place_to_visit_id', 'planner', 'name', 'type', 'cost', 'duration', 'priority', 'description', 'tips']
+
+class TransportSuggestionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransportSuggestions
+        fields = ['transport_suggestion_id', 'planner', 'name', 'affordability', 'approximate_cost', 'advantages', 'disadvantages', 'recommendation']
 
 class ItemChecklistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -87,11 +85,6 @@ class ItemSerializer(serializers.ModelSerializer):
 class PackingSuggestionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingSuggestions
-        fields = '__all__'
-
-class TransportSuggestionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TransportSuggestions
         fields = '__all__'
 
 class ExpenseSerializer(serializers.ModelSerializer):

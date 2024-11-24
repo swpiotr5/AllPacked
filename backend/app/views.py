@@ -11,9 +11,11 @@ from .models import Budget
 from .models import Planner
 from .models import PlaceToVisit
 from .models import Expense
+from .models import TransportSuggestions
 from .serializers import TripSerializer
 from .serializers import BudgetSerializer
 from .serializers import PlaceToVisitSerializer
+from .serializers import TransportSuggestionsSerializer
 from rest_framework import status
 from django.db import transaction
 from datetime import datetime, timedelta
@@ -86,6 +88,24 @@ class AddTripView(APIView):
             return {"errors": errors}
         return True
     
+    def create_transport_suggestions(self, trip_data):
+        openai_service = OpenAIService()
+        response = openai_service.generate_transportation_suggestions(trip_data)
+        formatted_suggestions = openai_service.format_transportation_suggestions(response)
+
+        errors = []
+        for suggestion in formatted_suggestions:
+            suggestion['planner'] = self.planner.planner_id
+            transport_suggestions_serializer = TransportSuggestionsSerializer(data=suggestion)
+            if transport_suggestions_serializer.is_valid():
+                transport_suggestions_serializer.save()
+            else:
+                errors.append(transport_suggestions_serializer.errors)
+
+        if errors:
+            return {"errors": errors}
+        return True
+
     def post(self, request):
         trip_data = request.data.get('trip')
         budget_data = request.data.get('budget')
@@ -102,9 +122,13 @@ class AddTripView(APIView):
             if budget_result is not True:
                 return Response(budget_result, status=status.HTTP_400_BAD_REQUEST)
             
-            suggestions_result = self.create_places_to_visit_suggestions(trip_data)
-            if isinstance(suggestions_result, dict) and 'errors' in suggestions_result:
-                return Response(suggestions_result, status=status.HTTP_400_BAD_REQUEST)
+            places_suggestions_result = self.create_places_to_visit_suggestions(trip_data)
+            if isinstance(places_suggestions_result, dict) and 'errors' in places_suggestions_result:
+                return Response(places_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
+            
+            transport_suggestions_result = self.create_transport_suggestions(trip_data)
+            if isinstance(transport_suggestions_result, dict) and 'errors' in transport_suggestions_result:
+                return Response(transport_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
             
             response_data = TripSerializer(trip).data
             return Response(response_data, status=status.HTTP_201_CREATED)
@@ -241,10 +265,29 @@ class GetPlacesView(APIView):
                         places = PlaceToVisit.objects.filter(planner=planner)
                         places_data = PlaceToVisitSerializer(places, many=True).data
                         return Response(places_data, status=status.HTTP_200_OK)
-                except Budget.DoesNotExist:
+                except Planner.DoesNotExist:
                     return Response({"error": "Planner not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
-        
+
+class GetTransportMeansView(APIView):
+    def get(self, request):
+        user = request.user
+        tripName = request.query_params.get('tripName')
+        if user.is_authenticated:
+            trip = Trip.objects.filter(user=user, tripName=tripName).first()
+            if trip:
+                try:
+                    planner = Planner.objects.get(trip=trip)
+                    if planner:
+                        transport_means = TransportSuggestions.objects.filter(planner=planner)
+                        transport_means_data = TransportSuggestionsSerializer(transport_means, many=True).data
+                        return Response(transport_means_data, status=status.HTTP_200_OK)
+                except Planner.DoesNotExist:
+                    return Response({"error": "Planner not found for this trip"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "Trip not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)

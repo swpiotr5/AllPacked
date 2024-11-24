@@ -1,45 +1,32 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 import Conveyance from './Conveyance';
+import axios from "../../interceptor/axios";
 
-const TransportationSuggestions = () => {
+const TransportationSuggestions = ({trip}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const transportMeans = [
-        {
-          name: "Private Car",
-          affordability: "Low in cities",
-          approximate_cost: "2-3 EUR/hour",
-          advantages: "Flexible, private",
-          disadvantages: "Traffic, expensive",
-          recommendation: "For privacy and comfort"
-        },
-        {
-          name: "Train (RER)",
-          affordability: "High",
-          approximate_cost: "1.90 EUR",
-          advantages: "Fast, frequent",
-          disadvantages: "Crowded, rush hours",
-          recommendation: "For medium distances"
-        },
-        {
-          name: "City Bus",
-          affordability: "High",
-          approximate_cost: "1.90 EUR",
-          advantages: "Wide coverage",
-          disadvantages: "Slow, crowded",
-          recommendation: "For short distances"
-        },
-        {
-          name: "Bikes (Vélib')",
-          affordability: "Medium",
-          approximate_cost: "1.70 EUR/30 min",
-          advantages: "Eco-friendly, fast",
-          disadvantages: "Weather, theft risk",
-          recommendation: "For active users"
-        }
-      ];
+    const [transportMeans, setTransportMeans] = useState();
       
+    useEffect(() => {
+        const fetchTransportMeans = async (tripName) => {
+            try {
+                const response = await axios.get(`/trip/gettransportmeans`, {
+                    params: {
+                        tripName: tripName
+                    }
+                });
+                const transportData = response.data;
+                setTransportMeans(transportData);
+            } catch (error) {
+                console.error('Error fetching budget data:', error);
+            }
+        };
+
+        if (trip.tripName) {
+            fetchTransportMeans(trip.tripName);
+        }
+    }, [trip.tripName]);
 
     const onExtendElement = (e) => {
         e.preventDefault();

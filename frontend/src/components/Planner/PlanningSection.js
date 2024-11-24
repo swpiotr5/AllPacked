@@ -8,7 +8,7 @@ const PlanningSection = ({trip, setLeftToPack}) => {
         <div className="max-w-screen-xl w-full h-full flex justify-center gap-10 items-center mt-12 mb-12 flex-col text-custom-white uppercase tracking-wide font-semibold">
             <ItemsChecklist setLeftToPack={setLeftToPack}></ItemsChecklist>
             <PlacesToVisit trip={trip}></PlacesToVisit>
-            <TransportationSuggestions></TransportationSuggestions>
+            <TransportationSuggestions trip={trip}></TransportationSuggestions>
         </div>
     );
 };

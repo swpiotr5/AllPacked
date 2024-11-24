@@ -12,6 +12,7 @@ urlpatterns = [
     path("trip/getallexpenses", app_views.GetExpensesView.as_view(), name="getallexpenses"),
     path("trip/putexpense", app_views.ModifyExpenseView.as_view(), name="putexpense"),
     path("trip/getplaces", app_views.GetPlacesView.as_view(), name="getplaces"),
+    path("trip/gettransportmeans", app_views.GetTransportMeansView.as_view(), name="gettransportmeans"),
     path('admin/', admin.site.urls),
     path('api/', include('app.urls')),
     path('token/', 

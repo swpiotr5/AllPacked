@@ -20,24 +20,6 @@ class Budget(models.Model):
     spentBudget = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=50)
 
-class Forecast(models.Model):
-    forecast_id = models.AutoField(primary_key=True)
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    location = models.CharField(max_length=50)
-    weather_description = models.CharField(max_length=50)
-    wind = models.FloatField()
-    pressure = models.FloatField()
-    temperature = models.FloatField()
-    humidity = models.FloatField()
-    rain = models.FloatField()
-    is_current = models.BooleanField()
-    sunset = models.CharField(max_length=50)
-    sunrise = models.CharField(max_length=50)
-    weather_icon = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.location
-
 class Planner(models.Model):
     planner_id = models.AutoField(primary_key=True)
     trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
@@ -52,6 +34,16 @@ class PlaceToVisit(models.Model):
     priority = models.CharField(max_length=50)
     description = models.TextField()
     tips = models.JSONField()
+
+class TransportSuggestions(models.Model):
+    transport_suggestion_id = models.AutoField(primary_key=True)
+    planner = models.ForeignKey(Planner, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    affordability = models.CharField(max_length=50)
+    approximate_cost = models.CharField(max_length=50)
+    advantages = models.CharField(max_length=100)
+    disadvantages = models.CharField(max_length=100)
+    recommendation = models.CharField(max_length=100)
 
 class ItemChecklist(models.Model):
     item_checklist_id = models.AutoField(primary_key=True)
@@ -78,15 +70,7 @@ class PackingSuggestions(models.Model):
 
     def __str__(self):
         return self.description
-
-class TransportSuggestions(models.Model):
-    transport_suggestion_id = models.AutoField(primary_key=True)
-    planner = models.ForeignKey(Planner, on_delete=models.CASCADE)
-    suggestion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.suggestion
-
+    
 class Expense(models.Model):
     expense_id = models.AutoField(primary_key=True)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)

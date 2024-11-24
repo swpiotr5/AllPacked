@@ -9,5 +9,6 @@ urlpatterns = [
     path("trip/addexpense", views.AddExpenseView.as_view(), name="addexpense"),
     path("trip/getallexpenses", views.GetExpensesView.as_view(), name="getallexpenses"),
     path("trip/putexpense", views.ModifyExpenseView.as_view(), name="putexpense"),
-    path("trip/getplaces", views.GetPlacesView.as_view(), name="getplaces")
+    path("trip/getplaces", views.GetPlacesView.as_view(), name="getplaces"),
+    path("trip/gettransportmeans", views.GetTransportMeansView.as_view(), name="gettransportmeans")
 ]
