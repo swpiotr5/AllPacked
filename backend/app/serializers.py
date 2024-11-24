@@ -75,17 +75,12 @@ class TransportSuggestionsSerializer(serializers.ModelSerializer):
 class ItemChecklistSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemChecklist
-        fields = '__all__'
+        fields = ['item_checklist_id', 'planner']
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = '__all__'
-    
-class PackingSuggestionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PackingSuggestions
-        fields = '__all__'
+        fields = ['item_id', 'item_checklist', 'name', 'is_checked', 'is_document', 'is_vaccination']
 
 class ExpenseSerializer(serializers.ModelSerializer):
     budget = serializers.PrimaryKeyRelatedField(read_only=True)

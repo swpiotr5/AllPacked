@@ -52,25 +52,11 @@ class ItemChecklist(models.Model):
 class Item(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_checklist = models.ForeignKey(ItemChecklist, on_delete=models.CASCADE)
-    description = models.CharField(max_length=50)
-    is_checked = models.BooleanField()
+    name = models.CharField(max_length=50)
+    is_checked = models.BooleanField(null=True, blank=True)  # Ustaw domyślnie na None
     is_document = models.BooleanField()
     is_vaccination = models.BooleanField()
-    is_medicine = models.BooleanField()
 
-    def __str__(self):
-        return self.description
-
-class PackingSuggestions(models.Model):
-    packing_suggestion_id = models.AutoField(primary_key=True)
-    item_checklist = models.ForeignKey(ItemChecklist, on_delete=models.CASCADE)
-    description = models.CharField(max_length=50)
-    is_checked = models.BooleanField()
-    is_accepted = models.BooleanField()
-
-    def __str__(self):
-        return self.description
-    
 class Expense(models.Model):
     expense_id = models.AutoField(primary_key=True)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)

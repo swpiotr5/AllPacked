@@ -8,11 +8,13 @@ from .models import Trip
 from .serializers import RegisterSerializer
 from .serializers import ExpenseSerializer
 from .models import Budget
+from .models import ItemChecklist
 from .models import Planner
 from .models import PlaceToVisit
 from .models import Expense
 from .models import TransportSuggestions
 from .serializers import TripSerializer
+from .serializers import ItemSerializer
 from .serializers import BudgetSerializer
 from .serializers import PlaceToVisitSerializer
 from .serializers import TransportSuggestionsSerializer
@@ -106,6 +108,30 @@ class AddTripView(APIView):
             return {"errors": errors}
         return True
 
+    def create_packing_suggestions(self, trip_data):
+        openai_service = OpenAIService()
+        response = openai_service.generate_packing_suggestions(trip_data)
+        formatted_suggestions = openai_service.format_packing_suggestions(response)
+
+        if not hasattr(self, 'planner'):
+            return {"error": "Planner was not created successfully"}
+
+        item_checklist = ItemChecklist.objects.create(planner=self.planner)
+
+        errors = []
+        for suggestion in formatted_suggestions:
+            suggestion['item_checklist'] = item_checklist.item_checklist_id
+            suggestion.setdefault('is_checked', False)
+            item_serializer = ItemSerializer(data=suggestion)
+            if item_serializer.is_valid():
+                item_serializer.save()
+            else:
+                errors.append(item_serializer.errors)
+
+        if errors:
+            return {"errors": errors}
+        return True
+    
     def post(self, request):
         trip_data = request.data.get('trip')
         budget_data = request.data.get('budget')
@@ -129,6 +155,10 @@ class AddTripView(APIView):
             transport_suggestions_result = self.create_transport_suggestions(trip_data)
             if isinstance(transport_suggestions_result, dict) and 'errors' in transport_suggestions_result:
                 return Response(transport_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
+            
+            packing_suggestions_result = self.create_packing_suggestions(trip_data)
+            if isinstance(packing_suggestions_result, dict) and 'errors' in packing_suggestions_result:
+                return Response(packing_suggestions_result, status=status.HTTP_400_BAD_REQUEST)
             
             response_data = TripSerializer(trip).data
             return Response(response_data, status=status.HTTP_201_CREATED)
