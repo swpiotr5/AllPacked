@@ -271,24 +271,29 @@ class GetExpensesView(APIView):
         
 class ModifyExpenseView(APIView):
     def put(self, request):
-        user = request.user
-        expense_data = request.data
-        expense_id = expense_data.get('expense_id')
-        
-        if user.is_authenticated:
-            try:
-                expense = Expense.objects.get(expense_id=expense_id, budget__trip__user=user)
-                expense_serializer = ExpenseSerializer(expense, data=expense_data, partial=True)
-                if expense_serializer.is_valid():
-                    expense_serializer.save()
-                    return Response(expense_serializer.data, status=status.HTTP_200_OK)
-                else:
-                    return Response(expense_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            except Expense.DoesNotExist:
-                return Response({"error": "Expense not found"}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
-        
+            user = request.user
+            expense_data = request.data
+            expense_id = expense_data.get('expense_id')
+            
+            if user.is_authenticated:
+                try:
+                    expense = Expense.objects.get(expense_id=expense_id, budget__trip__user=user)
+                    old_amount = expense.amount
+                    expense_serializer = ExpenseSerializer(expense, data=expense_data, partial=True)
+                    if expense_serializer.is_valid():
+                        expense = expense_serializer.save()
+                        budget = expense.budget
+                        amount_difference = expense.amount - old_amount
+                        budget.spentBudget = (budget.spentBudget or 0) + amount_difference
+                        budget.save()
+                        return Response(expense_serializer.data, status=status.HTTP_200_OK)
+                    else:
+                        return Response(expense_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                except Expense.DoesNotExist:
+                    return Response({"error": "Expense not found"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+            
 class GetPlacesView(APIView):
     def get(self, request):
         user = request.user

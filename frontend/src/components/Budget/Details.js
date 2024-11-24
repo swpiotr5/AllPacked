@@ -4,7 +4,7 @@ import SearchContainer from './SearchContainer';
 import ExpensesTable from './ExpensesTable';
 import axios from "../../interceptor/axios";
 
-const Details = ({trip}) => {
+const Details = ({trip, refreshDetails}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -26,7 +26,7 @@ const Details = ({trip}) => {
         if (trip.tripName) {
             fetchExpenses();
         }
-    }, [trip.tripName]);
+    }, [trip.tripName, refreshDetails]);
 
     const onExtendElement = (e) => {
         e.preventDefault();

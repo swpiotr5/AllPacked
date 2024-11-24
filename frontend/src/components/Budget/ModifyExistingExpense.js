@@ -4,7 +4,7 @@ import EditableDivToInput from './EditableDivToInput';
 import EditableDivToSelect from './EditableDivToSelect';
 import axios from "../../interceptor/axios";
 
-const ModifyExistingExpense = ({ trip }) => {
+const ModifyExistingExpense = ({ trip, setRefreshData, refreshModify, setRefreshDetails }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [selectedExpense, setSelectedExpense] = useState(null);
@@ -26,7 +26,7 @@ const ModifyExistingExpense = ({ trip }) => {
         if (trip.tripName) {
             fetchExpenses();
         }
-    }, [trip.tripName]);
+    }, [trip.tripName, refreshModify]);
 
     const handleExpenseChange = (e) => {
         if (e && e.target) {
@@ -50,6 +50,8 @@ const ModifyExistingExpense = ({ trip }) => {
         e.preventDefault();
         try {
             const response = await axios.put('/trip/putexpense', selectedExpense);
+            setRefreshData(prev => !prev);
+            setRefreshDetails(prev => !prev);
             console.log('Expense updated successfully:', response.data);
         } catch (error) {
             console.error('Error updating expense:', error);

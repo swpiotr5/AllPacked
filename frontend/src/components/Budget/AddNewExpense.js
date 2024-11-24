@@ -3,7 +3,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import axios from "../../interceptor/axios";
 import { Snackbar, Alert, Portal } from '@mui/material';
 
-const AddNewExpense = ({trip, setRefreshData}) => {
+const AddNewExpense = ({trip, setRefreshData, setRefreshModify, setRefreshDetails}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -46,6 +46,8 @@ const AddNewExpense = ({trip, setRefreshData}) => {
             console.log('Expense added successfully:', response.data);
             setShowSuccess(true);
             setRefreshData(prev => !prev);
+            setRefreshModify(prev => !prev);
+            setRefreshDetails(prev => !prev);
         } catch (error) {
             console.error('Error adding expense:', error);
         }

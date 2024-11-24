@@ -31,8 +31,11 @@ const CreateTripForm = () => {
     const prevStep = () => {
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     };
+
     const [error, setError] = useState();
     const [success, setSuccess] = useState();
+    const [loading, setLoading] = useState(false);
+
     const handleTripChange = (e) => {
         const { name, value } = e.target;
         setTripData((prevData) => ({
@@ -51,6 +54,9 @@ const CreateTripForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError(null);
+        setSuccess(null);
 
         const requiredTripFields = ['tripName', 'country', 'city', 'date', 'tripDuration', 'accommodation', 'tripPreferences'];
         const requiredBudgetFields = ['plannedBudget', 'currency'];
@@ -118,6 +124,8 @@ const CreateTripForm = () => {
             }
         } catch (error) {
             setError(error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -158,7 +166,14 @@ const CreateTripForm = () => {
                 )}
 
                 <div className="flex justify-center items-center flex-col gap-5">
-
+                    {loading && (
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                            <div className="bg-white p-5 rounded-lg shadow-lg text-center">
+                                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                                <p className="text-gray-700">Hang tight. Your AI is trying to remember what humans need to survive a trip.</p>
+                            </div>
+                        </div>
+                    )}
                     <div className="flex justify-center gap-5">
                         {error && (
                                 <div className="error mt-3 text-red-700 bg-red-100 border-l-4 border-red-500 p-3 rounded-lg shadow-md flex items-center space-x-3">
