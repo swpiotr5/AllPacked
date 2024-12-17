@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import homeBg from '../../assets/homebg.jpg';
 import { FaArrowDown } from 'react-icons/fa';
+import logoRowImg from '../../assets/onlylogo.png';
 
 const PictureSection = ({ onScrollToSection }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,19 +15,35 @@ const PictureSection = ({ onScrollToSection }) => {
   }, []);
 
   return (
-    <div id="picture-section" className="relative w-full h-screen">
-      <div className="relative flex justify-center items-center w-full h-full opacity-10 object-cover">
-          <img
-            src={homeBg}
-            className="w-full h-full object-cover"
-          />
+    <div id="picture-section" className="relative w-full h-screen overflow-hidden">
+      <div className="absolute inset-0 flex justify-center items-center">
+        <img src={homeBg} className="w-full h-full object-cover opacity-60" alt="Background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-50"></div>
       </div>
-      <div className={`flex flex-col justify-center w-full max-w-screen-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 whitespace-pre-line tracking-wide text-custom-white text-6xl transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-        <span>Pack Your Dreams with AllPacked!</span>
-        <span className="text-2xl mt-10">Why just travel when you can travel smart? AllPacked is your go-to travel planner that helps you organize every detail of your journey, ensuring you have more time for what truly matters — making memories.</span>
-        <div className=" flex flex-col items-center mt-24">
-          <span className="text-2xl">Click here to create new trip</span>
-          <button onClick={onScrollToSection}><FaArrowDown className="mt-7 text-4xl text-custom-white animate-bounce" /></button>
+
+      <div className={`absolute inset-0 flex flex-col justify-center items-center text-center transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="max-w-screen-xl mx-auto p-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+            <div className="md:col-span-2 text-left md:text-center">
+              <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight drop-shadow-lg">
+                Pack Your Dreams with AllPacked!
+              </h1>
+              <p className="text-xl md:text-2xl mt-5 text-white drop-shadow-lg">
+                Why just travel when you can travel smart? AllPacked is your go-to travel planner that helps you organize every detail of your journey, ensuring you have more time for what truly matters — making memories.
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <img src={logoRowImg} alt="Logo" className="object-cover w-3/4 md:w-3/4 pulse" />
+            </div>
+          </div>
+          <div className="mt-14 p-10">
+            <span className="text-lg md:text-xl text-white drop-shadow-lg">Click here to create new trip</span>
+            <div className="mt-4">
+              <button onClick={onScrollToSection}>
+                <FaArrowDown className="text-4xl text-white animate-bounce" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

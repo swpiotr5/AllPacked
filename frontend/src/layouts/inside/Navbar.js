@@ -31,7 +31,9 @@ const Navbar = ({ isHome, setIsAuth }) => {
     return (
         <div id="main-nav" className='fixed flex bg-custom-blue h-20 w-full z-10 justify-between items-center'>
             <div className='flex h-full pl-10 items-center'>        
-                <img src={logoRowImg} alt="Description" className="object-cover w-32 h-16" />
+                {/* <img src={logoRowImg} alt="Description" className="object-cover w-32 h-16" /> */}
+                {!isHome &&  
+                <img src={logoRowImg} alt="Description" className="object-cover w-32 h-16" />}  
             </div>
             <div className='flex-grow m-48 font-semibold'>
                 <ul className='flex h-full items-center justify-evenly space-x-4 text-xl text-custom-white'>
