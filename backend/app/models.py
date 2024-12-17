@@ -34,6 +34,7 @@ class PlaceToVisit(models.Model):
     priority = models.CharField(max_length=50)
     description = models.TextField()
     tips = models.JSONField()
+    location = models.CharField(max_length=255)  
 
 class TransportSuggestions(models.Model):
     transport_suggestion_id = models.AutoField(primary_key=True)

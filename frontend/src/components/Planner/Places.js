@@ -9,6 +9,10 @@ const Places = ({placeSuggestions}) => {
                 <span>{placeSuggestions.name}</span>
             </div>
             <div>
+                <span className="font-bold text-custom-blue">location: </span>
+                <span>{placeSuggestions.location}</span>
+            </div>
+            <div>
                 <span className="font-bold text-custom-blue">type: </span>
                 <span>{placeSuggestions.type}</span> 
             </div>

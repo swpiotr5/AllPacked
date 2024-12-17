@@ -62,15 +62,23 @@ class AddTripView(APIView):
     def create_budget(self, budget_data):
         if not hasattr(self, 'trip'):
             return {"error": "Trip was not created successfully"}
+        openai_service = OpenAIService()
+        trip_data = {
+            'country': self.trip.country
+        }
+        response = openai_service.get_currency_for_country(trip_data)
+        currency = openai_service.format_currency_response(response)
+        if not currency:
+            return {"error": "Failed to retrieve currency for the country"}
         
-        budget_data.update({'trip': self.trip.trip_id}) 
+        budget_data.update({'trip': self.trip.trip_id, 'currency': currency})
         budget_serializer = BudgetSerializer(data=budget_data)
         
         if budget_serializer.is_valid():
             budget_serializer.save()
             return True
         else:
-            print("Errors:", budget_serializer.errors)  
+            print("Errors:", budget_serializer.errors)
             return budget_serializer.errors
         
     def create_places_to_visit_suggestions(self, trip_data):
@@ -145,18 +153,15 @@ class AddTripView(APIView):
             planner = self.create_planner()
             if isinstance(planner, dict) and 'error' in planner:
                 return Response(planner, status=status.HTTP_400_BAD_REQUEST)
-            
             budget_result = self.create_budget(budget_data)
             if budget_result is not True:
                 return Response(budget_result, status=status.HTTP_400_BAD_REQUEST)
-            
             with ThreadPoolExecutor() as executor:
                 futures = {
                     executor.submit(self.create_places_to_visit_suggestions, trip_data): 'places',
                     executor.submit(self.create_transport_suggestions, trip_data): 'transport',
                     executor.submit(self.create_packing_suggestions, trip_data): 'packing'
                 }
-                
                 results = {}
                 for future in as_completed(futures):
                     task_name = futures[future]
@@ -167,7 +172,6 @@ class AddTripView(APIView):
                         results[task_name] = result
                     except Exception as e:
                         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
             response_data = TripSerializer(trip).data
             return Response(response_data, status=status.HTTP_201_CREATED)
         else:

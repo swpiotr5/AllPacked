@@ -13,7 +13,7 @@ const Conveyance = ({transportMean}) => {
                 <span>{transportMean.affordability}</span> 
             </div>
             <div>
-                <span className="font-bold text-custom-blue">approximate_cost: </span>
+                <span className="font-bold text-custom-blue">approximate cost: </span>
                 <span>{transportMean.approximate_cost}</span> 
             </div>
             <div>

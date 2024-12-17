@@ -65,7 +65,7 @@ class PlannerSerializer(serializers.ModelSerializer):
 class PlaceToVisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceToVisit
-        fields = ['place_to_visit_id', 'planner', 'name', 'type', 'cost', 'duration', 'priority', 'description', 'tips']
+        fields = ['place_to_visit_id', 'planner', 'name', 'type', 'cost', 'duration', 'priority', 'description', 'tips', 'location']  
 
 class TransportSuggestionsSerializer(serializers.ModelSerializer):
     class Meta:
