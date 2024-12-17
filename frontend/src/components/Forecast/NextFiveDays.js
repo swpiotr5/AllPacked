@@ -1,52 +1,22 @@
 import React from 'react';
 
-const NextFiveDays = ({nextFiveDaysForecast}) => {
-
+const NextFiveDays = ({ nextFiveDaysForecast }) => {
     return (
-        <div className="flex flex-col bg-custom-light-blue mt-5 p-3 w-full h-full rounded-xl">
-            <p>next 5 days</p>
-            {console.log(nextFiveDaysForecast)}
-            <div className="grid grid-cols-5 gap-10 pt-4 pb-4 pl-2 pr-2 w-full h-full">
-                <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
-                    <p>Tomorrow</p>
-                    <img
-                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[0].mostFrequentIcon}@2x.png`}
-                    className="w-full h-1/2 object-cover"
-                    />
-                    <p>{nextFiveDaysForecast[0].averageTemp}</p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
-                    <p>{nextFiveDaysForecast[1].dayOfWeek}</p>
-                    <img
-                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[1].mostFrequentIcon}@2x.png`}
-                    className="w-full h-1/2 object-cover"
-                    />
-                    <p>{nextFiveDaysForecast[1].averageTemp}</p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
-                    <p>{nextFiveDaysForecast[2].dayOfWeek}</p>
-                    <img
-                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[2].mostFrequentIcon}@2x.png`}
-                    className="w-full h-1/2 object-cover"
-                    />
-                    <p>{nextFiveDaysForecast[2].averageTemp}</p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
-                    <p>{nextFiveDaysForecast[3].dayOfWeek}</p>
-                    <img
-                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[3].mostFrequentIcon}@2x.png`}
-                    className="w-full h-1/2 object-cover"
-                    />
-                    <p>{nextFiveDaysForecast[3].averageTemp}</p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2 bg-custom-blue rounded-xl">
-                    <p>{nextFiveDaysForecast[4].dayOfWeek}</p>
-                    <img
-                    src={`https://openweathermap.org/img/wn/${nextFiveDaysForecast[4].mostFrequentIcon}@2x.png`}
-                    className="w-full h-1/2 object-cover"
-                    />
-                    <p>{nextFiveDaysForecast[4].averageTemp}</p>
-                </div>
+        <div className="flex flex-col bg-custom-light-blue mt-3 p-3 w-full h-full rounded-xl shadow-lg">
+            <h2 className="text-sm text-custom-white mb-3">Next 5 Days</h2>
+            <div className="grid grid-cols-5 gap-4">
+                {nextFiveDaysForecast.map((day, index) => (
+                    <div key={index} className="flex flex-col justify-center items-center gap-1 bg-custom-blue rounded-xl p-3 shadow-md">
+                        <p className="text-md font-semibold text-custom-white">{index === 0 ? 'Tomorrow' : day.dayOfWeek}</p>
+                        <p className="text-xs text-custom-white">{day.date}</p>
+                        <img
+                            src={`https://openweathermap.org/img/wn/${day.mostFrequentIcon}@2x.png`}
+                            alt="weather icon"
+                            className="w-12 h-12"
+                        />
+                        <p className="text-lg font-bold text-custom-white">{day.averageTemp}</p>
+                    </div>
+                ))}
             </div>
         </div>
     );

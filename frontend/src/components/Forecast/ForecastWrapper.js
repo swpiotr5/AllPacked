@@ -90,10 +90,10 @@ const ForecastWrapper = ({trip}) => {
             acc[day] = {
                 dayOfWeek,
                 temperatures: [],
-                icons: []
+                icons: [],
+                dt: item.dt 
             };
         }
-
         acc[day].temperatures.push(item.main.temp);
         acc[day].icons.push(item.weather[0].icon);
 
@@ -101,9 +101,10 @@ const ForecastWrapper = ({trip}) => {
     }, {});
     const today = new Date().getUTCDate();
 
+
     const nextFiveDaysForecast = Object.values(groupedForecast)
     .filter(day => day.dayOfWeek !== today)
-    .slice(0, 5)
+    .slice(1, 6)
     .map(day => {
         const averageTemp = day.temperatures.length > 0 ? day.temperatures.reduce((sum, temp) => sum + temp, 0) / day.temperatures.length : 0;
         let iconFrequency = day.icons.reduce((acc, icon) => {
@@ -124,11 +125,12 @@ const ForecastWrapper = ({trip}) => {
 
         return {
             dayOfWeek: day.dayOfWeek,
+            date: new Date(day.dt * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
             averageTemp: `${Math.round(averageTemp)}°C`,
             mostFrequentIcon
         };
     });
-
+    
     return (
         <div className='relative grid grid-cols-3 mt-12 mb-5 p-4 gap-4 bg-custom-medium-blue items-center h-auto w-2/3 rounded-xl'>
             <div className="flex flex-col text-custom-white w-full h-full col-span-2">
