@@ -4,7 +4,7 @@ import EditableDivToInput from './EditableDivToInput';
 import EditableDivToSelect from './EditableDivToSelect';
 import axios from "../../interceptor/axios";
 
-const ModifyExistingExpense = ({ trip, setRefreshData, refreshModify, setRefreshDetails }) => {
+const ModifyExistingExpense = ({ trip, budget, setRefreshData, refreshModify, setRefreshDetails }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [selectedExpense, setSelectedExpense] = useState(null);
@@ -64,12 +64,12 @@ const ModifyExistingExpense = ({ trip, setRefreshData, refreshModify, setRefresh
         const arrowButton = document.getElementById('arrow-existing');
         if (existingExpenseSection) {
             if (isExpanded) {
-                existingExpenseSection.classList.remove("h-64");
+                existingExpenseSection.classList.remove("h-auto");
                 existingExpenseSection.classList.add("h-12");
                 arrowButton.classList.remove("rotate-180");
             } else {
                 existingExpenseSection.classList.remove("h-12");
-                existingExpenseSection.classList.add("h-64");
+                existingExpenseSection.classList.add("h-auto");
                 arrowButton.classList.add("rotate-180");
             }
             setIsExpanded(!isExpanded);
@@ -97,27 +97,27 @@ const ModifyExistingExpense = ({ trip, setRefreshData, refreshModify, setRefresh
             </div>
             {selectedExpense && (
                 <form className='flex flex-col justify-center items-center w-full gap-6' onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-4 gap-10 w-full pl-5 pr-5 mt-5">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-10 w-full pl-5 pr-5 mt-5">
                         <div>
-                            <p>Expense name</p>
+                            <p className="text-sm text-custom-white">Expense name</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
                                 <EditableDivToInput value={selectedExpense.name} onChange={(value) => handleFieldChange('name', value)} />
                             </div>
                         </div>
                         <div>
-                            <p>Description</p>
+                            <p className="text-sm text-custom-white">Description</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
                                 <EditableDivToInput value={selectedExpense.description} onChange={(value) => handleFieldChange('description', value)} />
                             </div>
                         </div>
                         <div>
-                            <p>Cost</p>
+                            <p className="text-sm text-custom-white">Cost ({budget.currency})</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
                                 <EditableDivToInput value={selectedExpense.amount} onChange={(value) => handleFieldChange('amount', value)} />
                             </div>
                         </div>
                         <div>
-                            <p>Type</p>
+                            <p className="text-sm text-custom-white">Type</p>
                             <div className="pl-7 p-2 h-10 bg-custom-light-blue rounded-xl shadow-2xl w-full text-sm input-placeholder text-custom-white">
                                 <EditableDivToSelect value={selectedExpense.exp_type} onChange={(value) => handleFieldChange('exp_type', value)} />
                             </div>

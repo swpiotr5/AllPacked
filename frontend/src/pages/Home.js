@@ -26,14 +26,14 @@ const Home = ({ setIsAuth }) => {
     <div>
       <Navbar isHome={true} setIsAuth={setIsAuth}></Navbar>
       <Body>
-        <PictureSection id="picture-section" onScrollToSection={onScrollToSection} />
+        <PictureSection id="picture-section"  onScrollToSection={onScrollToSection} />
         <ManageTripSection id="manage-trip-section" />
       </Body>
-      <button onClick={onScrollToTop} className="fixed bottom-5 right-5 z-10 mt-7 text-4xl text-custom-white">
+      <button onClick={onScrollToTop} className="hidden md:block fixed bottom-5 right-5 z-10 mt-7 text-4xl text-custom-white">
         <FaArrowCircleUp />
       </button>
     </div>
-  );
+  ); 
 };
 
 export default Home;

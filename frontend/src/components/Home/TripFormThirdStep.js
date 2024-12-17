@@ -25,7 +25,7 @@ const TripFormThirdStep = ({ tripPreferences, accommodation, onChange }) => {
     return (
         <div>
             <div className="w-full flex flex-col gap-10 items-center justify-center">
-                <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
+                <label className="text-1xl text-custom-white flex items-center flex-col w-2/3 md:w-1/3">
                     Select trip preferences
                     <select
                         name="tripPreferences"
@@ -38,7 +38,7 @@ const TripFormThirdStep = ({ tripPreferences, accommodation, onChange }) => {
                     </select>
                 </label>
                 
-                <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
+                <label className="text-1xl text-custom-white flex items-center flex-col w-2/3 md:w-1/3">
                     What type of accommodation do you plan to choose?
                     <select
                         name="accommodation"

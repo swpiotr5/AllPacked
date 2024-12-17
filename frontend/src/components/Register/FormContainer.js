@@ -8,9 +8,9 @@ const FormContainer = ({registerData, handleChange, handleSubmit, error, success
 
     return (
         <div className="relative flex flex-col justify-center items-center w-full z-10">
-            <form className="flex flex-col p-1 w-3/5" onSubmit={handleSubmit}>
+            <form className="flex flex-col p-1 w-4/5 md:w-3/5" onSubmit={handleSubmit}>
                 <div className="relative">
-                    <p className="text-custom-white mb-1 text-sm">Email</p>
+                    <p className="text-custom-white mb-1 text-md md:text-sm">Email</p>
                     <Input 
                         type="text" 
                         name="email" 
@@ -26,7 +26,7 @@ const FormContainer = ({registerData, handleChange, handleSubmit, error, success
                     )}                
                 </div>
                 <div className="relative">
-                    <p className="text-custom-white mb-1 mt-3 text-sm">Password</p>
+                    <p className="text-custom-white mb-1 mt-3 text-md md:text-sm">Password</p>
                     <Input 
                         type="password"
                         name="password"
@@ -42,7 +42,7 @@ const FormContainer = ({registerData, handleChange, handleSubmit, error, success
                     )}                
                 </div>
                 <div className="relative">
-                    <p className="text-custom-white mb-1 mt-2 text-sm"> Confirm Password</p>
+                    <p className="text-custom-white mb-1 mt-2 text-md md:text-sm"> Confirm Password</p>
                     <Input 
                         type="password"
                         name="confirm_password"
@@ -66,7 +66,7 @@ const FormContainer = ({registerData, handleChange, handleSubmit, error, success
                 <button type="submit" className=" border-slate-600 p-1 mt-8 font-bold shadow-2xl bg-custom-white text-custom-dark-blue rounded-xl text-lg hover:bg-custom-dark-blue hover:text-custom-white">Register</button>
                 {error && <div className="error text-red-600">{error.non_field_errors}</div>}
                 <div className="flex justify-start text-left mt-2 w-full">
-                    <a href="/login" className="text-custom-white hover:underline block text-xs mt-3">Already have an account? Login</a>        
+                    <a href="/login" className="text-custom-white hover:underline block text-md md:text-xs mt-3">Already have an account? Login</a>        
                 </div>
             </form>
         </div>

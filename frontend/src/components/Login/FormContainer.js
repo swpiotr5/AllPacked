@@ -7,7 +7,7 @@ const FormContainer = ({loginData, handleChange, handleSubmit, error}) => {
 
     return (
         <div className="relative flex flex-col justify-center items-center w-full">
-            <form className="flex flex-col p-1 w-3/5" onSubmit={handleSubmit}>
+            <form className="flex flex-col p-1 md:w-3/5 w-4/5" onSubmit={handleSubmit}>
                 <div className="relative">
                     <p className="text-custom-white mb-1 text-">Email</p>
                     <input

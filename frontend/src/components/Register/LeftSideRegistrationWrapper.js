@@ -3,7 +3,7 @@ import LeftSideContainer from '../../components/Register/LeftSideContainer';
 
 const LeftSideRegistrationWrapper = () => {
     return (
-        <div className="w-1/2 h-full">
+        <div className="hidden md:block w-1/2 h-full">
             <LeftSideContainer></LeftSideContainer>
         </div>
       );

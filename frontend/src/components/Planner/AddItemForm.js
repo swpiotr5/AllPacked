@@ -24,8 +24,8 @@ const AddItemForm = ({ addItem, trip }) => {
 
     return (
         <div className="w-full flex justify-center">
-            <div className="w-11/12 bg-custom-dark-blue rounded-3xl h-auto flex flex-col items-center pl-2 py-2">
-                <form onSubmit={handleSubmit} className="flex flex-row gap-3 w-full items-center">
+            <div className="w-full md:w-11/12 bg-custom-dark-blue rounded-3xl h-auto flex flex-col items-center pl-2 py-2">
+                <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-3 w-full items-center">
                     <div className="flex items-center gap-3 w-full">
                         <button type="submit" className="flex items-center justify-center">
                             <MdAddCircleOutline className="text-2xl" />
@@ -40,7 +40,7 @@ const AddItemForm = ({ addItem, trip }) => {
                             />
                         </label>
                     </div>
-                    <div className="flex gap-3 w-full justify-center">
+                    <div className="flex flex-row md:flex-row gap-3 w-full justify-center">
                         <label className="flex items-center gap-2">
                             <input
                                 type="checkbox"

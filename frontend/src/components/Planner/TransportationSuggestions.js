@@ -5,9 +5,8 @@ import axios from "../../interceptor/axios";
 
 const TransportationSuggestions = ({trip}) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [transportMeans, setTransportMeans] = useState([]);
 
-    const [transportMeans, setTransportMeans] = useState();
-      
     useEffect(() => {
         const fetchTransportMeans = async (tripName) => {
             try {
@@ -48,14 +47,14 @@ const TransportationSuggestions = ({trip}) => {
 
     return (
         <div id="wrapper-trans" className="flex w-full p-3 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
-            <div className='flex'>
+            <div className='flex w-full'>
                 <button id="arrow-trans" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
                 <p className="pl-5">Transportation Suggestions</p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-5">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
                 {transportMeans && transportMeans.length > 0 && (
-                    transportMeans.map((transportMean) => (
-                        <Conveyance transportMean={transportMean}></Conveyance>
+                    transportMeans.map((transportMean, index) => (
+                        <Conveyance key={index} transportMean={transportMean}></Conveyance>
                     ))
                 )}
             </div>

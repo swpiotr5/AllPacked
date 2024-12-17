@@ -15,7 +15,7 @@ const PictureSection = ({ onScrollToSection }) => {
   }, []);
 
   return (
-    <div id="picture-section" className="relative w-full h-screen overflow-hidden">
+    <div id="picture-section" className="hidden md:block relative w-full h-screen overflow-hidden">
       <div className="absolute inset-0 flex justify-center items-center">
         <img src={homeBg} className="w-full h-full object-cover opacity-60" alt="Background" />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-50"></div>
@@ -25,15 +25,15 @@ const PictureSection = ({ onScrollToSection }) => {
         <div className="max-w-screen-xl mx-auto p-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             <div className="md:col-span-2 text-left md:text-center">
-              <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight drop-shadow-lg">
+              <h1 className="text-center text-4xl md:text-6xl font-bold text-white leading-tight drop-shadow-lg">
                 Pack Your Dreams with AllPacked!
               </h1>
-              <p className="text-xl md:text-2xl mt-5 text-white drop-shadow-lg">
+              <p className="hidden md:block text-lg md:text-2xl mt-5 text-white drop-shadow-lg">
                 Why just travel when you can travel smart? AllPacked is your go-to travel planner that helps you organize every detail of your journey, ensuring you have more time for what truly matters — making memories.
               </p>
             </div>
             <div className="flex justify-center">
-              <img src={logoRowImg} alt="Logo" className="object-cover w-3/4 md:w-3/4 pulse" />
+              <img src={logoRowImg} alt="Logo" className="object-cover w-3/4 md:w-1/2 pulse" />
             </div>
           </div>
           <div className="mt-14 p-10">

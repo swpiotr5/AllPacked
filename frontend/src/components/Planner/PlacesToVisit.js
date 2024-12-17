@@ -5,8 +5,7 @@ import axios from "../../interceptor/axios";
 
 const PlacesToVisit = ({trip}) => {
     const [isExpanded, setIsExpanded] = useState(false);
-
-    const [placesSuggestions, setPlacesSuggestions] = useState();
+    const [placesSuggestions, setPlacesSuggestions] = useState([]);
 
     useEffect(() => {
         const fetchPlaces = async (tripName) => {
@@ -48,14 +47,14 @@ const PlacesToVisit = ({trip}) => {
 
     return (
         <div id="wrapper-places" className="flex w-full p-3 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
-            <div className='flex'>
-                <button id="arrow-places" onClick={onExtendElement} className="text-3xl "><IoMdArrowDropdown /></button>
+            <div className='flex w-full'>
+                <button id="arrow-places" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
                 <p className="pl-5">Places to visit suggestions</p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-5">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
                 {placesSuggestions && placesSuggestions.length > 0 && (
-                    placesSuggestions.map((placeSuggestions) => (
-                        <Places placeSuggestions={placeSuggestions}></Places>
+                    placesSuggestions.map((placeSuggestions, index) => (
+                        <Places key={index} placeSuggestions={placeSuggestions}></Places>
                     ))
                 )}
             </div>

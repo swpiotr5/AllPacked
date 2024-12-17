@@ -70,7 +70,7 @@ const Budget = ({setIsAuth}) => {
                     <TripBudgetInformation  trip={trip} budget={budget}/>
                 )}
                 {trip.tripName && (
-                    <ManageExpenses trip={trip} setRefreshData={setRefreshData}/>
+                    <ManageExpenses trip={trip} budget={budget} setRefreshData={setRefreshData}/>
                 )}
             </Body>
         </div>

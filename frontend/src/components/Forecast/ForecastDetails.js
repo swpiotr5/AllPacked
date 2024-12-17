@@ -4,7 +4,7 @@ const ForecastDetails = ({ city, currConds, temperature, weatherIcon }) => {
     const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
 
     return (
-        <div className="grid grid-cols-4 gap-4 p-5 mb-5 rounded-xl ">
+        <div className="grid grid-cols-4 gap-4 p-5 mb-5 rounded-xl bg-custom-light-blue shadow-lg">
             <div className='col-span-2 flex flex-col justify-center'>
                 <p className="text-sm text-custom-white">Your location:</p>
                 <p className="mt-2 mb-2 text-3xl tracking-wide font-bold text-custom-white">{city}</p>

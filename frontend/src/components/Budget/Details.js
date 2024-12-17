@@ -4,7 +4,7 @@ import SearchContainer from './SearchContainer';
 import ExpensesTable from './ExpensesTable';
 import axios from "../../interceptor/axios";
 
-const Details = ({trip, refreshDetails}) => {
+const Details = ({trip, budget, refreshDetails}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -34,12 +34,12 @@ const Details = ({trip, refreshDetails}) => {
         const arrowDetailsButton = document.getElementById('arrow-details');
         if (detailsSection) {
             if (isExpanded) {
-                detailsSection.classList.remove("h-96");
+                detailsSection.classList.remove("h-auto");
                 detailsSection.classList.add("h-12");
                 arrowDetailsButton.classList.remove("rotate-180");
             } else {
                 detailsSection.classList.remove("h-12");
-                detailsSection.classList.add("h-96");
+                detailsSection.classList.add("h-auto");
                 arrowDetailsButton.classList.add("rotate-180");
             }
             setIsExpanded(!isExpanded);
@@ -56,13 +56,13 @@ const Details = ({trip, refreshDetails}) => {
 
     return (
         <div id="wrapper-details" className="flex w-full p-3 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden h-12 rounded-xl transition-all duration-300">
-            <div className='flex'>
+            <div className='flex w-full'>
                 <button id="arrow-details" onClick={onExtendElement} className="text-3xl transition-all duration-300"><IoMdArrowDropdown /></button>
                 <p className="pl-5">Details</p>
             </div>
             <SearchContainer searchQuery={searchQuery} onSearchChange={handleSearchChange}></SearchContainer>
             <div className='w-full flex justify-center'>
-                <ExpensesTable expenses={filteredExpenses}></ExpensesTable>
+                <ExpensesTable budget={budget} expenses={filteredExpenses}></ExpensesTable>
             </div>
         </div>
     );

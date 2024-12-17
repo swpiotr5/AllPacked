@@ -18,19 +18,19 @@ const TripBudgetInformation = ({ trip, budget }) => {
   };
 
   return (
-    <div className="max-w-screen-xl w-full flex justify-center items-center mt-12 flex-col text-custom-white uppercase tracking-wide font-semibold">
-      <div className="">
-        <p className="text-3xl">{tripName} trip</p>
+    <div className="max-w-screen-xl w-full flex flex-col justify-center items-center mt-12 text-custom-white uppercase tracking-wide font-semibold p-4">
+      <div className="text-center">
+        <p className="text-2xl md:text-3xl">{tripName} trip</p>
       </div>
-      <div className="w-full grid grid-cols-2 justify-items-center mt-5">
-        <div className="flex justify-center items-center rounded-xl w-2/3 text-xl bg-custom-blue h-10">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 justify-items-center mt-5 gap-4">
+        <div className="flex justify-center items-center rounded-xl w-full md:w-2/3 text-lg md:text-xl bg-custom-blue h-10 p-2">
           <p>planned budget: {plannedBudget}</p>
         </div>
-        <div className="flex justify-center items-center rounded-xl w-2/3 text-xl bg-custom-blue h-10">
+        <div className="flex justify-center items-center rounded-xl w-full md:w-2/3 text-lg md:text-xl bg-custom-blue h-10 p-2">
           <p>spent budget: {spentBudget}</p>
         </div>
       </div>
-      <div className="w-2/3 mt-10 flex flex-col items-center text-xl">
+      <div className="w-full md:w-2/3 mt-10 flex flex-col items-center text-lg md:text-xl">
         <p>Money left: {remainingBudget} {budget.currency}</p>
         <div className="flex w-full items-center pl-1 pr-1 mt-3 h-10 rounded-full overflow-hidden bg-custom-white" role="progressbar" aria-valuenow={progressPercentage} aria-valuemin="0" aria-valuemax="100">
           <div className={`flex flex-col h-8 justify-center rounded-full overflow-hidden text-xs text-white text-center whitespace-nowrap transition duration-500 ${getProgressBarColor(progressPercentage)}`} style={{ width: `${progressPercentage}%` }}>

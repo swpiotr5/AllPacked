@@ -4,7 +4,7 @@ import AddItemForm from './AddItemForm';
 import ToPackList from './ToPackList';
 import axios from "../../interceptor/axios";
 
-const ItemsChecklist = ({ trip, setLeftToPack, setRefreshVacc, setRefreshDocs } ) => {
+const ItemsChecklist = ({ trip, setLeftToPack, setRefreshVacc, setRefreshDocs }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [items, setItems] = useState([]);
 
@@ -101,18 +101,17 @@ const ItemsChecklist = ({ trip, setLeftToPack, setRefreshVacc, setRefreshDocs } 
         setLeftToPack(leftToPackItems.length);
     }, [items, setLeftToPack]);
 
-
     return (
         <div id="wrapper-checklist" className={`flex w-full p-3 pb-5 items-start flex-col gap-4 bg-custom-medium-blue overflow-hidden ${isExpanded ? 'h-auto' : 'h-12'} rounded-xl transition-all duration-300`}>
-            <div className='flex'>
+            <div className='flex w-full'>
                 <button id="arrow-checklist" onClick={onExtendElement} className={`text-3xl transition-all duration-300 ${isExpanded ? 'rotate-180' : ''}`}><IoMdArrowDropdown /></button>
                 <p className="pl-5">View items checklist</p>
             </div>
-            <AddItemForm setRefreshVacc={setRefreshVacc} setRefreshDocs={setRefreshDocs} trip={trip} addItem={addItem}/>
+            <AddItemForm setRefreshVacc={setRefreshVacc} setRefreshDocs={setRefreshDocs} trip={trip} addItem={addItem} />
             <ToPackList items={items.filter(item => !item.is_checked)} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
             <span className="text-xs ml-14">Items Packed: {alreadyPacked.length}</span>
             {alreadyPacked.length > 0 ? (
-                <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem}/>
+                <ToPackList items={alreadyPacked} ChangeItemStatus={ChangeItemStatus} removeItem={removeItem} />
             ) : (
                 <span id="random-message" className="text-xs ml-14">{randomMessage}</span>
             )}

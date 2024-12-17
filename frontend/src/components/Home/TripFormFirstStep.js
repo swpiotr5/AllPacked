@@ -5,7 +5,7 @@ const TripFormFirstStep = ({ tripName, country, city, onChange}) => {
     return (
         <div>
                 <div className="w-full flex flex-col gap-10 items-center justify-center">
-                    <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
+                    <label className="text-1xl text-custom-white flex items-center flex-col w-2/3 md:w-1/3">
                         Provide trip name
                         <div className="relative w-full mt-5">
                             <input
@@ -20,7 +20,7 @@ const TripFormFirstStep = ({ tripName, country, city, onChange}) => {
                             <FaSuitcase className="absolute right-3 top-1/2 transform -translate-y-1/2 text-custom-white" />
                         </div>
                     </label>
-                    <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
+                    <label className="text-1xl text-custom-white flex items-center flex-col w-2/3 md:w-1/3">
                         Provide country
                         <div className="relative w-full mt-5">
                             <input
@@ -35,7 +35,7 @@ const TripFormFirstStep = ({ tripName, country, city, onChange}) => {
                             <FaGlobe className="absolute right-3 top-1/2 transform -translate-y-1/2 text-custom-white" />
                         </div>
                     </label>
-                    <label className="text-1xl text-custom-white flex items-center flex-col w-1/3">
+                    <label className="text-1xl text-custom-white flex items-center flex-col w-2/3 md:w-1/3">
                         Provide city
                         <div className="relative w-full mt-5">
                             <input

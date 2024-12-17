@@ -132,8 +132,8 @@ const ForecastWrapper = ({trip}) => {
     });
     
     return (
-        <div className='relative grid grid-cols-3 mt-12 mb-5 p-4 gap-4 bg-custom-medium-blue items-center h-auto w-2/3 rounded-xl'>
-            <div className="flex flex-col text-custom-white w-full h-full col-span-2">
+        <div className='relative grid grid-cols-1 md:grid-cols-3 mt-12 mb-20 md:mb-5 p-4 gap-4 bg-custom-medium-blue items-center h-auto w-full md:w-2/3 rounded-xl'>
+            <div className="flex flex-col text-custom-white w-full h-full col-span-1 md:col-span-2">
                 <ForecastDetails temperature={temperature} currConds={currConds} city={city} weatherIcon={weatherIcon}></ForecastDetails>
                 <TodayForecast todayForecastParameters={todayForecastParameters}></TodayForecast>
                 <NextFiveDays nextFiveDaysForecast={nextFiveDaysForecast}></NextFiveDays>
@@ -144,5 +144,3 @@ const ForecastWrapper = ({trip}) => {
 };
 
 export default ForecastWrapper;
-
-

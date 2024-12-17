@@ -36,7 +36,7 @@ const TripSelector = ({ trip, onTripChange }) => {
     };
 
     return (
-        <div className="bg-custom-grey w-60 mt-32 rounded-xl flex justify-center">
+        <div className="bg-custom-grey w-60 mt-5 md:mt-32 rounded-xl flex justify-center">
             <select
                 name="trips"
                 id="trip-select"
