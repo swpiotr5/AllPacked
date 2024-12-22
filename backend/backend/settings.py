@@ -17,12 +17,21 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Inicjalizacja obiektu environ
+env = environ.Env(
+    # Ustaw domyślne wartości zmiennych środowiskowych
+    DEBUG=(bool, False)
+)
+
+# Odczytanie pliku .env
+environ.Env.read_env()
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r*o9%_uepv+uyw0ebb+q4&c1=)*o&7so_b3dqk1vvv$zi&d5su'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,7 +55,10 @@ INSTALLED_APPS = [
 
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000", 
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,14 +108,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Inicjalizacja obiektu environ
-env = environ.Env(
-    # Ustaw domyślne wartości zmiennych środowiskowych
-    DEBUG=(bool, False)
-)
 
-# Odczytanie pliku .env
-environ.Env.read_env()
 
 # Użycie zmiennych środowiskowych
 DATABASES = {
