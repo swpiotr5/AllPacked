@@ -17,7 +17,7 @@ const ForecastDetails = ({ city, currConds, temperature, weatherIcon }) => {
                 <img
                     src={iconUrl}
                     alt="Weather icon"
-                    className="w-24 h-24"
+                    className="hidden md:block w-24 h-24"
                 />
             </div>
         </div>

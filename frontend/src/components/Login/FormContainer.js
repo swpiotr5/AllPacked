@@ -45,7 +45,7 @@ const FormContainer = ({loginData, handleChange, handleSubmit, error}) => {
                     )}
                 <button type="submit" className=" border-slate-600 p-1 mt-6 font-bold shadow-2xl bg-custom-white text-custom-dark-blue rounded-xl text-xl hover:bg-custom-dark-blue hover:text-custom-white">Sign In</button>
                 
-                <div className="flex items-center my-4 w-full">
+                {/* <div className="flex items-center my-4 w-full">
                     <div className="flex-grow border-t border-custom-white"></div>
                     <span className="mx-4 text-custom-white">OR</span>
                     <div className="flex-grow border-t border-custom-white"></div>
@@ -53,7 +53,7 @@ const FormContainer = ({loginData, handleChange, handleSubmit, error}) => {
                 <button className="flex items-center justify-center border-slate-600 p-1 opacity-80 p-2 font-semibold shadow-2xl bg-custom-dark-blue text-custom-white rounded-xl text-l hover:bg-custom-white hover:text-custom-dark-blue">
                     <i className="fab fa-google mr-2"></i>
                     Sign in with Google
-                </button>
+                </button> */}
 
                 <div className="flex justify-start text-left mt-2 w-full">
                     <a href="/register" className="text-custom-white hover:underline block text-s mt-3">Don't have an account? Sign up</a>        

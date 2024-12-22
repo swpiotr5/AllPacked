@@ -130,8 +130,8 @@ const CreateTripForm = () => {
     };
 
     return (
-        <div className="mt-10 rounded-xl w-full h-auto flex flex-col gap-10">
-            <div className="flex items-center justify-center h-3 gap-3 mb-10">
+        <div className="mt-5 md:mt-10 rounded-xl w-full h-auto flex flex-col gap-10">
+            <div className="flex items-center justify-center h-3 gap-3 mb-15 md:mb-10">
                     {steps.map((step, i) => (
                         <div
                             key={i}
